@@ -1,56 +1,77 @@
 <template>
   <div class="container">
-    <h2>
-      To-Do list
-    </h2>
-    <form @submit.prevent="onSubmit"
-          class="d-flex"
+    <h2>To-Do List</h2>
+    <input
+        class="form-control"
+        type="text"
+        v-model="searchText"
+        placeholder="Search"
     >
-      <div class="flex-grow-1 mr-2">
-        <input class="form-control"
-               type="text"
-               v-model="todo"
-               placeholder="Type new to-do"
-        >
-      </div>
-      <div>
-        <button
-            class="btn btn-primary"
-            type="submit"
-        >
-          Add
-        </button>
-      </div>
-    </form>
-    {{todos}}
+    <hr />
+    <TodoSimpleForm @add-todo="addTodo" />
+
+    <div v-if="!filteredTodos.length">
+      There is nothing to display
+    </div>
+    <TodoList
+        :todos="filteredTodos"
+        @toggle-todo="toggleTodo"
+        @delete-todo="deleteTodo"
+    />
   </div>
 </template>
+
 <script>
-import {ref} from "vue";
+import { ref, computed } from 'vue';
+import TodoSimpleForm from './components/TodoSimpleForm.vue';
+import TodoList from './components/TodoList.vue';
 
 export default {
+  components: {
+    TodoSimpleForm,
+    TodoList,
+  },
   setup() {
-    const todo = ref('');
     const todos = ref([]);
 
-    const onSubmit = () => {
-      todos.value.push({
-        id: Date.now(),
-        subject: todo.value
-      })
-    }
+    const addTodo = (todo) => {
+      todos.value.push(todo);
+    };
 
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
+    };
+
+    const toggleTodo = (index) => {
+      console.log(index)
+      todos.value[index].completed = !todos.value[index].completed
+    };
+
+    const searchText = ref('');
+    const filteredTodos = computed(() => {
+      if (searchText.value) {
+        return todos.value.filter(todo => {
+          return todo.subject.includes(searchText.value);
+        });
+      }
+
+      return todos.value;
+    });
     return {
-      todo,
       todos,
-      onSubmit
-    }
+      addTodo,
+      deleteTodo,
+      toggleTodo,
+      searchText,
+      filteredTodos,
+    };
   }
 }
 </script>
 
 <style>
-.name {
-  color: red;
+.todo {
+  color: gray;
+  text-decoration: line-through;
 }
 </style>
