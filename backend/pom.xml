@@ -40,6 +40,20 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Querydsl 의존성 추가 -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>4.4.0</version> <!-- 최신 버전으로 교체 -->
+        </dependency>
+
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>4.4.0</version> <!-- 최신 버전으로 교체 -->
+            <scope>provided</scope>
+        </dependency>
+
         <!-- MariaDB JDBC Driver -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
@@ -59,11 +73,7 @@
             <artifactId>hibernate-validator</artifactId>
             <version>7.0.2.Final</version> <!-- Hibernate Validator 버전에 따라 변경 -->
         </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.5.20</version>
-        </dependency>
+
 
 
         <!-- io.jsonwebtoken:jjwt-api -->
@@ -97,6 +107,25 @@
 
     <build>
         <plugins>
+
+            <!-- Q 파일 생성 , queryDsl -->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version> <!-- 최신 버전으로 교체 -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
