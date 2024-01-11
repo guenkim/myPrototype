@@ -1,8 +1,10 @@
 package com.guen.program.todo.api;
 
 import com.guen.error.ErrorResponse;
+import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
+import com.guen.program.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -12,11 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,7 +28,10 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping("/api/todos")
 @Tag(name = "Todo API")
+@RequiredArgsConstructor
 public class TodoController {
+
+    private final TodoService todoService;
 
     @GetMapping
     @Operation(summary = "todo 목록 반환")
@@ -33,11 +40,8 @@ public class TodoController {
     })
     public ResponseEntity getTodos() {
         log.info("TodoController > getTodos");
-
-        List<TodoReq> todoReqs = IntStream.range(1, 11).mapToObj(i -> new TodoReq("제목" + i, "내용" + i, Complete.FALSE)).collect(Collectors.toList());
-
-        todoReqs.add(new TodoReq("제목", "내용", Complete.FALSE));
-        return ResponseEntity.ok().body(todoReqs);
+        List<Todo> todoList = todoService.findAll();
+        return ResponseEntity.ok().body(todoList);
     }
 
     @GetMapping("/{todoId}")
@@ -52,7 +56,8 @@ public class TodoController {
             @PathVariable(value = "todoId", required = true) String todoId
     ) {
         log.info("TodoController > getTodo");
-        return ResponseEntity.ok().body(new TodoReq("제목", "내용", Complete.FALSE));
+        Optional<Todo> todo = todoService.findById(todoId);
+        return ResponseEntity.ok().body(todo);
     }
 
     @PostMapping("/create")
@@ -66,7 +71,7 @@ public class TodoController {
             @Valid @RequestBody TodoReq todoReq
     ) {
         log.info("TodoController > create");
-
+        todoService.save(todoReq);
         return ResponseEntity.noContent().build();
     }
 
@@ -84,6 +89,7 @@ public class TodoController {
             @Valid @RequestBody TodoReq todoReq
     ) {
         log.info("TodoController > update");
+        todoService.updateById(todoId,todoReq);
         return ResponseEntity.noContent().build();
     }
 
@@ -100,6 +106,7 @@ public class TodoController {
             @PathVariable(value = "todoId", required = true) String todoId
     ) {
         log.info("TodoController > delete");
+        todoService.remove(todoId);
         return ResponseEntity.noContent().build();
     }
 
@@ -118,6 +125,7 @@ public class TodoController {
             @PathVariable(value = "completed", required = true) boolean completed
     ) {
         log.info("TodoController > updateComplete");
+        todoService.updateCompleteById(todoId,completed);
         return ResponseEntity.noContent().build();
     }
 

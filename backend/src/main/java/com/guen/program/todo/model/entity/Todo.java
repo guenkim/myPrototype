@@ -30,8 +30,20 @@ public class Todo {
     @Lob
     private String body;
 
-    @Column(name = "completed", nullable = false,length = 4)
+    @Column(name = "completed", nullable = false,length = 5)
     @Enumerated(EnumType.STRING)
     private Complete completed;
 
+    public Todo(String subject, String body, Complete completed) {
+        this.subject = subject;
+        this.body = body;
+        this.completed = completed;
+    }
+
+    public Todo(Long id, String subject, String body, Complete completed) {
+        this.id = id;
+        this.subject = subject;
+        this.body = body;
+        this.completed = completed;
+    }
 }
