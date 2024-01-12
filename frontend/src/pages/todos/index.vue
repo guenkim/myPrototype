@@ -1,24 +1,31 @@
 <template>
   <div>
-    <h2>To-Do List</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+      <button 
+        class="btn btn-primary"
+        @click="moveToCreatePage"
+      >
+        Create Todo
+      </button>
+    </div>
+    
     <input
-        class="form-control"
-        type="text"
-        v-model="searchText"
-        placeholder="Search"
-        @keyup.enter="searchTodo"
+      class="form-control"
+      type="text" 
+      v-model="searchText"
+      placeholder="Search"
+      @keyup.enter="searchTodo"
     >
     <hr />
-    <TodoSimpleForm @add-todo="addTodo" />
-    <div style="color: red">{{ error }}</div>
-
+    
     <div v-if="!todos.length">
       There is nothing to display
     </div>
-    <TodoList
-        :todos="todos"
-        @toggle-todo="toggleTodo"
-        @delete-todo="deleteTodo"
+    <TodoList 
+      :todos="todos" 
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
     />
     <hr />
     <nav aria-label="Page navigation example">
@@ -29,10 +36,10 @@
           </a>
         </li>
         <li
-            v-for="page in numberOfPages"
-            :key="page"
-            class="page-item"
-            :class="currentPage === page ? 'active' : ''"
+          v-for="page in numberOfPages"
+          :key="page" 
+          class="page-item"
+          :class="currentPage === page ? 'active' : ''"
         >
           <a style="cursor: pointer" class="page-link" @click="getTodos(page)">{{page}}</a>
         </li>
@@ -42,20 +49,28 @@
       </ul>
     </nav>
   </div>
+  <Toast 
+    v-if="showToast" 
+    :message="toastMessage"
+    :type="toastAlertType"
+  />
 </template>
 
 <script>
 import { ref, computed, watch } from 'vue';
-import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import axios from 'axios';
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
+import {useRouter} from 'vue-router';
 
 export default {
   components: {
-    TodoSimpleForm,
     TodoList,
+    Toast,
   },
   setup() {
+    const router = useRouter();
     const todos = ref([]);
     const error = ref('');
     const numberOfTodos = ref(0);
@@ -66,18 +81,26 @@ export default {
       return Math.ceil(numberOfTodos.value/limit);
     });
 
+    const {
+      toastMessage,
+      toastAlertType,
+      showToast,
+      triggerToast
+    } = useToast();
+
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
         const res = await axios.get(
-            `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
         );
         numberOfTodos.value = res.headers['x-total-count'];
         todos.value = res.data;
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
-      }
+        triggerToast('Something went wrong', 'danger')
+      }    
     };
 
     getTodos();
@@ -95,6 +118,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
     };
 
@@ -103,11 +127,12 @@ export default {
       const id = todos.value[index].id;
       try {
         await axios.delete('http://localhost:3000/todos/' + id);
-
+        
         getTodos(1);
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
     };
 
@@ -123,8 +148,15 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger')
       }
+      
+    };
 
+    const moveToCreatePage = () => {
+      router.push({
+        name: 'TodoCreate',
+      })
     };
 
     let timeout = null;
@@ -137,7 +169,7 @@ export default {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         getTodos(1);
-      }, 2000);
+      }, 2000);     
     });
 
     return {
@@ -151,14 +183,18 @@ export default {
       numberOfPages,
       currentPage,
       getTodos,
+      toastMessage,
+      toastAlertType,
+      showToast,
+      moveToCreatePage,
     };
   }
 }
 </script>
 
 <style>
-.todo {
-  color: gray;
-  text-decoration: line-through;
-}
+  .todo {
+    color: gray;
+    text-decoration: line-through;
+  }
 </style>
