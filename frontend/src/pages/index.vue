@@ -1,12 +1,20 @@
 <template>
-  <div>home page</div>
+  <h3 class="mt-4">Vue3 기초 익히기 - Composition Api</h3>
 </template>
 
 <script>
-export default {}
+import { useCount } from '@/composables/count';
 
+export default {
+  setup() {
+    const { count } = useCount();
+
+    return {
+      count
+    }
+  }
+}
 </script>
-
 
 <style>
 
