@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class InitRunner implements ApplicationRunner {
     @Autowired
     ErrorCode.ErrorCodeInitializer errorCodeInitializer;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.info("==================================\n property 초기화 \n =========================");
