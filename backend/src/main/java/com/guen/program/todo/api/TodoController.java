@@ -1,8 +1,6 @@
 package com.guen.program.todo.api;
 
-import com.guen.error.ErrorResponse;
 import com.guen.program.todo.model.entity.Todo;
-import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,12 +15,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
@@ -38,7 +35,7 @@ public class TodoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공")
     })
-    public ResponseEntity getTodos() {
+    public ResponseEntity getTodos(){
         log.info("TodoController > getTodos");
         List<Todo> todoList = todoService.findAll();
         return ResponseEntity.ok().body(todoList);

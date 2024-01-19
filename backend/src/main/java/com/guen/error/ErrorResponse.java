@@ -1,27 +1,43 @@
 package com.guen.error;
 
-
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Schema(description = "에러 Response")
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
-@Setter
-public class ErrorResponse{
+public class ErrorResponse {
 
-    @Schema(description = "에러 메시지", defaultValue = "")
-    private String errorMessage="일단 에러메시지다..";
+    private String message;
+    private String code;
+    private int status;
+    private List<FieldError> errors = new ArrayList<>();
 
-    @Schema(description = "에러코드", allowableValues = {"404", "500"})
-    private String errorCode="일단 에러코드다..";
-
-    public ErrorResponse(String errorMessage) {
-        this.errorMessage = errorMessage;
-        this.errorCode = "404";
+    @Builder
+    public ErrorResponse(String message, String code, int status, List<FieldError> errors) {
+        this.message = message;
+        this.code = code;
+        this.status = status;
+        this.errors = initErrors(errors);
     }
-    public ErrorResponse(String errorMessage, String errorCode) {
-        this.errorMessage = errorMessage;
-        this.errorCode = errorCode;
+
+    private List<FieldError> initErrors(List<FieldError> errors) {
+        return (errors == null) ? new ArrayList<>() : errors;
     }
+
+    @Getter
+    public static class FieldError {
+        private String field;
+        private String value;
+        private String reason;
+
+        @Builder
+        public FieldError(String field, String value, String reason) {
+            this.field = field;
+            this.value = value;
+            this.reason = reason;
+        }
+    }
+
 }
