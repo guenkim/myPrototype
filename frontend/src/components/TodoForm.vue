@@ -98,7 +98,7 @@ export default {
             const res = await axios.get(`todos/${todoId}`);
 
             todo.value = { ...res.data };
-            originalTodo.value = { ...res.data };
+            originalTodo.value  = { ...res.data };
 
             loading.value = false;
           } catch (error) {

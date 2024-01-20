@@ -73,10 +73,13 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          //`todos?_sort=id&_order=desc&subject_like=${searchText.value}&page=${page}&size=${limit}`
+            `todos?subject=${searchText.value}&page=${page}&size=${limit}`
         );
-        numberOfTodos.value = res.headers['x-total-count'];
-        todos.value = res.data;
+        console.log(res.data)
+        numberOfTodos.value = res.data.totalElements;
+        todos.value = res.data.content;
+
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
@@ -86,6 +89,8 @@ export default {
 
     getTodos();
 
+
+    /**
     const addTodo = async (todo) => {
       // 데이터베이스 투두를 저장
       error.value = '';
@@ -102,6 +107,8 @@ export default {
         triggerToast('Something went wrong', 'danger')
       }
     };
+     **/
+
 
     const deleteTodo = async (id) => {
       error.value = '';
@@ -118,14 +125,13 @@ export default {
     };
 
     const toggleTodo = async (index, checked) => {
+      const completed = checked ? "TRUE" : "FALSE";
       error.value = '';
       const id = todos.value[index].id;
       try {
-        await axios.patch('todos/' + id, {
-          completed: checked
-        });
+        await axios.patch(`todos/${id}/`+completed);
 
-        todos.value[index].completed = checked
+        todos.value[index].completed = checked;
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
@@ -156,7 +162,7 @@ export default {
     return {
       searchTodo,
       todos,
-      addTodo,
+      //addTodo,
       deleteTodo,
       toggleTodo,
       searchText,

@@ -1,7 +1,9 @@
 package com.guen.program.todo.api;
 
+import com.guen.common.model.PageRequest;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.request.TodoReq;
+import com.guen.program.todo.model.response.TodoRes;
 import com.guen.program.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
@@ -36,11 +39,24 @@ public class TodoController {
             @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity getTodos(){
+    public Page<TodoRes> getTodos(
+            @RequestParam(name = "subject", required = false) final String subject,
+            final PageRequest pageRequest
+    ){
         log.info("TodoController > getTodos");
-        List<Todo> todoList = todoService.findAll();
-        return ResponseEntity.ok().body(todoList);
+        return todoService.search(subject, pageRequest.of()).map(TodoRes::new);
     }
+
+    /**
+    @GetMapping
+    public Page<AccountDto.Res> getAccounts(
+            @RequestParam(name = "type") final AccountSearchType type,
+            @RequestParam(name = "subject", required = false) final String subject,
+            final PageRequest pageRequest
+    ) {
+        return accountSearchService.search(type, value, pageRequest.of()).map(AccountDto.Res::new);
+    }
+     **/
 
     @GetMapping("/{todoId}")
     @Operation(summary = "todo 반환")
@@ -55,7 +71,7 @@ public class TodoController {
     ) {
         log.info("TodoController > getTodo");
         Optional<Todo> todo = todoService.findById(todoId);
-        return ResponseEntity.ok().body(todo);
+        return ResponseEntity.ok().body(new TodoRes(todo.get()));
     }
 
     @PostMapping

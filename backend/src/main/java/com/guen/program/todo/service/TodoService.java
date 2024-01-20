@@ -3,13 +3,17 @@ package com.guen.program.todo.service;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
+import com.guen.program.todo.model.response.TodoRes;
 import com.guen.program.todo.repository.jpa.pure.TodoPureRepository;
 import com.guen.program.todo.repository.jpa.querydsl.TodoJpa;
 import com.guen.program.todo.repository.jpa.springdata.TodoSpringDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +35,8 @@ public class TodoService {
      ******************************************/
 
 
-    public List<Todo> findAll(){
-        return queryDslRepo.findAll();
+    public Page<Todo> search(final String subject, final Pageable pageable){
+        return queryDslRepo.search(subject,pageable);
     }
 
     public Optional<Todo> findById(String todoId){

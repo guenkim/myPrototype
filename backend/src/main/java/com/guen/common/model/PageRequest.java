@@ -6,7 +6,7 @@ public final class PageRequest {
 
     private int page;
     private int size;
-    private Sort.Direction direction;
+//    private Sort.Direction direction;
 
     public void setPage(int page) {
         this.page = page <= 0 ? 1 : page;
@@ -18,9 +18,9 @@ public final class PageRequest {
         this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
     }
 
-    public void setDirection(Sort.Direction direction) {
-        this.direction = direction;
-    }
+//    public void setDirection(Sort.Direction direction) {
+//        this.direction = direction;
+//    }
 
     public int getPage() {
         return page;
@@ -30,11 +30,12 @@ public final class PageRequest {
         return size;
     }
 
-    public Sort.Direction getDirection() {
-        return direction;
-    }
+//    public Sort.Direction getDirection() {
+//        return direction;
+//    }
 
     public org.springframework.data.domain.PageRequest of() {
-        return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
+//        return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
+        return org.springframework.data.domain.PageRequest.of(page - 1, size);
     }
 }
