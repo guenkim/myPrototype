@@ -137,7 +137,7 @@ export default {
             let res;
             const data = {
               subject: todo.value.subject,
-              completed: todo.value.completed,
+              completed:  _.upperCase(todo.value.completed), //todo.value.completed
               body: todo.value.body,
             };
             if (props.editing) {

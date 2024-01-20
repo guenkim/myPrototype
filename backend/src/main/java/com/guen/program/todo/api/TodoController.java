@@ -33,7 +33,8 @@ public class TodoController {
     @GetMapping
     @Operation(summary = "todo 목록 반환")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공")
+            @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity getTodos(){
         log.info("TodoController > getTodos");
@@ -57,7 +58,7 @@ public class TodoController {
         return ResponseEntity.ok().body(todo);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @Operation(summary = "todo 생성")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "todo 생성 성공", content = @Content(schema = @Schema(hidden = true))),
