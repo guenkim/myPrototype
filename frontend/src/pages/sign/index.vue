@@ -50,7 +50,7 @@
 <script>
 import {ref} from "vue";
 import {useToast} from "@/composables/toast";
-import AxiosInst from "@/axios";
+import AuthService from "@/service/auth/auth.service";
 
 export default {
   setup() {
@@ -67,23 +67,25 @@ export default {
           triggerToast
     } = useToast();
 
-    const onSave = async () =>{
+    const onSave =  () =>{
       const data = {
         account : signInfo.value.account,
         password : signInfo.value.password,
         name : signInfo.value.name,
         age : signInfo.value.age
       };
-      try{
-        const res = await AxiosInst.post('/sign-up',data);
-        console.log(res);
-      }catch(err){
-        console.log(err.response.data.code);
-        console.log(err.response.data.message);
-        console.log(err.response.data.status);
-        triggerToast(err.response.data.message, 'danger');
-      }
 
+      AuthService.signUp(data).then(
+          (res)=>{
+              console.log(res);
+          } ,
+          (err)=>{
+              console.log(err.response.data.code);
+              console.log(err.response.data.message);
+              console.log(err.response.data.status);
+              triggerToast(err.response.data.message, 'danger');
+          }
+      );
     }
 
     return {

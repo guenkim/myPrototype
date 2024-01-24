@@ -7,21 +7,18 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
-@ResponseBody
+@RestControllerAdvice
 @Slf4j
 public class ErrorExceptionController {
 
@@ -100,11 +97,10 @@ public class ErrorExceptionController {
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse handleExpiredJwtException(Exception e) {
-        log.error(e.getMessage());
-        return buildError(ErrorCode.ExpiredJwtException);
+    public ResponseEntity<ErrorResponse> handleExpiredJwtException() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(buildError(ErrorCode.ExpiredJwtException));
     }
+
 
 
     // TODO: 2018. 5. 12. 비밀번호 변경 컨트롤러 생성시 주석 해제할것 -yun

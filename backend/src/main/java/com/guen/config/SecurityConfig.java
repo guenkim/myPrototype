@@ -27,6 +27,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
+                .cors()
+                .and()
                 // H2 콘솔 사용을 위한 설정
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .authorizeHttpRequests(request ->

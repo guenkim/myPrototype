@@ -29,14 +29,14 @@
 import {ref} from "vue";
 import {useToast} from "@/composables/toast";
 import {useRouter} from "vue-router";
-import AxiosInst from "@/axios";
+import AuthService from "@/service/auth/auth.service";
 
 export default {
   setup() {
     const router = useRouter();
     const signInfo = ref({
-      account : '',
-      password :''
+      account: '',
+      password: ''
     });
     const {
       toastMessage,
@@ -45,29 +45,26 @@ export default {
       triggerToast
     } = useToast();
 
-    const onSave = async () =>{
+    const onSave = () => {
       const data = {
-        account : signInfo.value.account,
-        password : signInfo.value.password
+        account: signInfo.value.account,
+        password: signInfo.value.password
       };
-      try{
-        const res = await AxiosInst.post('/sign-in',data);
-        console.log(res);
-        // 로컬 스토리지에 저장
-        const returnData = {...res.data};
-        localStorage.clear();
-        localStorage.setItem("accessToken",returnData.data.accessToken);
-        localStorage.setItem("refreshToken",returnData.data.refreshToken);
-        router.push({
-          name: 'Home'
-        });
-      }catch(err){
-        console.log(err.response.data.code);
-        console.log(err.response.data.message);
-        console.log(err.response.data.status);
-        triggerToast(err.response.data.message, 'danger');
-      }
 
+        AuthService.signIn(data).then(
+            (res) => {
+              console.log(res);
+              router.push({
+                name: 'Home'
+              });
+            },
+            (err) => {
+              console.log(err.response.data.code);
+              console.log(err.response.data.message);
+              console.log(err.response.data.status);
+              triggerToast(err.response.data.message, 'danger');
+            }
+        );
     }
 
     return {

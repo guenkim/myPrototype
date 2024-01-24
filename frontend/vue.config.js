@@ -11,11 +11,10 @@ module.exports = defineConfig({
 module.exports = {
   devServer: {
     proxy: {
-      '/':{
-        "target":'http://localhost:8082/api/', // Spring boot의 주소 및 포트
-        //"pathRewrite":{'^/':''},
-        "changeOrigin":true,
-        ws:false
+      '/api':{
+        "target":'http://localhost:8082', // Spring boot의 주소 및 포트
+        changeOrigin: true,
+        ws:true
       }
     }
   }
