@@ -13,8 +13,9 @@ module.exports = {
     proxy: {
       '/':{
         "target":'http://localhost:8082/api/', // Spring boot의 주소 및 포트
-        "pathRewrite":{'^/':''},
+        //"pathRewrite":{'^/':''},
         "changeOrigin":true,
+        ws:false
       }
     }
   }

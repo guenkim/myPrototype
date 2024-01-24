@@ -3,6 +3,8 @@ import Home from '../pages/index.vue';
 import Todos from '../pages/todos/index.vue';
 import Todo from '../pages/todos/_id.vue';
 import TodoCreate from '../pages/todos/create/index.vue';
+import Login from "@/pages/login/index.vue";
+import SignIn from "@/pages/sign/index.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,6 +28,16 @@ const router = createRouter({
             path: '/todos/:id',
             name: 'Todo',
             component: Todo
+        },
+        {
+            path: '/login',
+            name: 'Login',
+            component: Login
+        },
+        {
+            path: '/signin',
+            name: 'Sign',
+            component: SignIn
         }
     ]
 });

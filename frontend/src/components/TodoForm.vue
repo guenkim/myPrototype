@@ -55,11 +55,11 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
-import axios from '@/axios';
 import { ref, computed } from 'vue';
 import _ from 'lodash';
 import { useToast } from '@/composables/toast';
 import Input from '@/components/Input.vue';
+import AxiosInst from "@/axios";
 
 export default {
   components: {
@@ -72,6 +72,10 @@ export default {
       }
   },
     setup(props) {
+        const headers = {
+          'Authorization': 'Bearer '+localStorage.getItem('accessToken'),
+          'Refresh-Token': 'Bearer '+localStorage.getItem('refreshToken')
+        };
         const route = useRoute();
         const router = useRouter();
         const todo = ref({
@@ -95,16 +99,18 @@ export default {
         const getTodo = async () => {
             loading.value = true;
           try {
-            const res = await axios.get(`todos/${todoId}`);
+            const res = await AxiosInst.get(`todos/${todoId}`,{headers});
 
             todo.value = { ...res.data };
             originalTodo.value  = { ...res.data };
 
             loading.value = false;
-          } catch (error) {
+          } catch (err) {
             loading.value = false;
-            console.log(error);
-            triggerToast('Something went wrong', 'danger');
+            console.log(err.response.data.code);
+            console.log(err.response.data.message);
+            console.log(err.response.data.status);
+            triggerToast(err.response.data.message, 'danger');
           }
         };
 
@@ -141,10 +147,10 @@ export default {
               body: todo.value.body,
             };
             if (props.editing) {
-              res = await axios.put(`todos/${todoId}`, data);
+              res = await AxiosInst.put(`todos/${todoId}`, data,{headers});
               originalTodo.value = {...res.data};
             } else {
-              res = await axios.post('todos', data);
+              res = await AxiosInst.post('todos', data, {headers});
               todo.value.subject = '';
               todo.value.body = '';
             }
@@ -157,9 +163,11 @@ export default {
                 name: 'Todos'
               })
             }
-          } catch (error) {
-            console.log(error);
-            triggerToast('Something went wrong', 'danger')
+          } catch (err) {
+            console.log(err.response.data.code);
+            console.log(err.response.data.message);
+            console.log(err.response.data.status);
+            triggerToast(err.response.data.message, 'danger');
           }
         };
 

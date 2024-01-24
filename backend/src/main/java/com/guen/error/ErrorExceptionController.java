@@ -1,9 +1,13 @@
 package com.guen.error;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -67,6 +71,39 @@ public class ErrorExceptionController {
     protected ErrorResponse handleInternalServerException(Exception e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /*******************************************************************************
+     * SpringSecurity - JWT 토큰 관련 에러 핸들링
+     *******************************************************************************/
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDeniedException(Exception e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.AccessDenied);
+    }
+
+
+    @ExceptionHandler(SignatureException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleSignatureException(Exception e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.Signature);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleMalformedJwtException(Exception e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.MalformedJwt);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleExpiredJwtException(Exception e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.ExpiredJwtException);
     }
 
 

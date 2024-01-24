@@ -11,7 +11,11 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 public enum ErrorCode {
     INPUT_VALUE_INVALID,
-    INTERNAL_SERVER_ERROR;
+    INTERNAL_SERVER_ERROR,
+    AccessDenied,
+    Signature,
+    MalformedJwt,
+    ExpiredJwtException;
 
     private String code;
     private String message;
@@ -47,9 +51,58 @@ public enum ErrorCode {
         @NotBlank
         private int serverErrStts;
 
+
+        @Value("${error.AccessDenied.code}")
+        @NotBlank
+        private String accessDeniedErrCd;
+        @Value("${error.AccessDenied.message}")
+        @NotBlank
+        private String accessDeniedErrMsg;
+        @Value("${error.AccessDenied.status}")
+        @NotBlank
+        private int accessDeniedErrStts;
+
+
+        @Value("${error.Signature.code}")
+        @NotBlank
+        private String signatureErrCd;
+        @Value("${error.Signature.message}")
+        @NotBlank
+        private String signatureErrMsg;
+        @Value("${error.Signature.status}")
+        @NotBlank
+        private int signatureErrStts;
+
+        @Value("${error.MalformedJwt.code}")
+        @NotBlank
+        private String malformedJwtErrCd;
+        @Value("${error.MalformedJwt.message}")
+        @NotBlank
+        private String malformedJwtErrMsg;
+        @Value("${error.MalformedJwt.status}")
+        @NotBlank
+        private int malformedJwtErrStts;
+
+        @Value("${error.ExpiredJwtException.code}")
+        @NotBlank
+        private String expiredJwtErrCd;
+        @Value("${error.ExpiredJwtException.message}")
+        @NotBlank
+        private String expiredJwtErrMsg;
+        @Value("${error.ExpiredJwtException.status}")
+        @NotBlank
+        private int expiredJwtErrStts;
+
         public void init(){
             ErrorCode.INPUT_VALUE_INVALID.initialize(invalidInputErrCd,invalidInputErrMsg,invalidInputErrStts);
             ErrorCode.INTERNAL_SERVER_ERROR.initialize(serverErrCd,serverErrMsg,serverErrStts);
+
+
+
+            ErrorCode.AccessDenied.initialize(accessDeniedErrCd,accessDeniedErrMsg,accessDeniedErrStts);
+            ErrorCode.Signature.initialize(signatureErrCd,signatureErrMsg,signatureErrStts);
+            ErrorCode.MalformedJwt.initialize(malformedJwtErrCd,malformedJwtErrMsg,malformedJwtErrStts);
+            ErrorCode.ExpiredJwtException.initialize(expiredJwtErrCd,expiredJwtErrMsg,expiredJwtErrStts);
         }
     }
 }

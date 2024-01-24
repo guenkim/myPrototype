@@ -40,10 +40,12 @@
 <script>
 import { ref, computed, watch } from 'vue';
 import TodoList from '@/components/TodoList.vue';
-import axios from '@/axios';
 import { useToast } from '@/composables/toast';
 import {useRouter} from 'vue-router';
 import Pagination from '@/components/Pagination.vue';
+import AxiosInst from "@/axios";
+
+// import axios from "axios";
 
 export default {
   components: {
@@ -51,6 +53,10 @@ export default {
     Pagination
   },
   setup() {
+    const headers = {
+      'Authorization': 'Bearer '+localStorage.getItem('accessToken'),
+      'Refresh-Token': 'Bearer '+localStorage.getItem('refreshToken')
+    };
     const router = useRouter();
     const todos = ref([]);
     const error = ref('');
@@ -72,18 +78,18 @@ export default {
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
-        const res = await axios.get(
-          //`todos?_sort=id&_order=desc&subject_like=${searchText.value}&page=${page}&size=${limit}`
-            `todos?subject=${searchText.value}&page=${page}&size=${limit}`
+        const res = await AxiosInst.get(
+            `todos?subject=${searchText.value}&page=${page}&size=${limit}`,
+            {headers}
         );
-        console.log(res.data)
         numberOfTodos.value = res.data.totalElements;
         todos.value = res.data.content;
-
       } catch (err) {
-        console.log(err);
-        error.value = 'Something went wrong.';
-        triggerToast('Something went wrong', 'danger')
+        console.log(err.response.data.code);
+        console.log(err.response.data.message);
+        console.log(err.response.data.status);
+        error.value = err.response.data.message;
+        triggerToast(err.response.data.message, 'danger');
       }    
     };
 
@@ -114,13 +120,15 @@ export default {
       error.value = '';
     
       try {
-        await axios.delete('todos/' + id);
+        await AxiosInst.delete('todos/' + id,{headers});
         
         getTodos(1);
       } catch (err) {
-        console.log(err);
-        error.value = 'Something went wrong.';
-        triggerToast('Something went wrong', 'danger')
+        console.log(err.response.data.code);
+        console.log(err.response.data.message);
+        console.log(err.response.data.status);
+        error.value = err.response.data.message;
+        triggerToast(err.response.data.message, 'danger');
       }
     };
 
@@ -129,13 +137,15 @@ export default {
       error.value = '';
       const id = todos.value[index].id;
       try {
-        await axios.patch(`todos/${id}/`+completed);
+        await AxiosInst.patch(`todos/${id}/`+completed,null,{headers});
 
         todos.value[index].completed = checked;
       } catch (err) {
-        console.log(err);
-        error.value = 'Something went wrong.';
-        triggerToast('Something went wrong', 'danger')
+        console.log(err.response.data.code);
+        console.log(err.response.data.message);
+        console.log(err.response.data.status);
+        error.value = err.response.data.message;
+        triggerToast(err.response.data.message, 'danger');
       }
       
     };

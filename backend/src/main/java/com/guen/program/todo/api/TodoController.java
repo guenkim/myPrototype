@@ -1,6 +1,7 @@
 package com.guen.program.todo.api;
 
 import com.guen.common.model.PageRequest;
+import com.guen.jwt.security.UserAuthorize;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoRes;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/todos")
 @Tag(name = "Todo API")
+@UserAuthorize
 @RequiredArgsConstructor
 public class TodoController {
 
