@@ -15,7 +15,8 @@ public enum ErrorCode {
     AccessDenied,
     Signature,
     MalformedJwt,
-    ExpiredJwtException;
+    ExpiredJwtException,
+    ExpiredRefreshJwtException;
 
     private String code;
     private String message;
@@ -93,6 +94,18 @@ public enum ErrorCode {
         @NotBlank
         private int expiredJwtErrStts;
 
+        @Value("${error.ExpiredRefreshJwtException.code}")
+        @NotBlank
+        private String expiredRefreshJwtErrCd;
+        @Value("${error.ExpiredRefreshJwtException.message}")
+        @NotBlank
+        private String expiredRefreshJwtErrMsg;
+        @Value("${error.ExpiredRefreshJwtException.status}")
+        @NotBlank
+        private int expiredRefreshJwtErrStts;
+
+
+
         public void init(){
             ErrorCode.INPUT_VALUE_INVALID.initialize(invalidInputErrCd,invalidInputErrMsg,invalidInputErrStts);
             ErrorCode.INTERNAL_SERVER_ERROR.initialize(serverErrCd,serverErrMsg,serverErrStts);
@@ -103,6 +116,7 @@ public enum ErrorCode {
             ErrorCode.Signature.initialize(signatureErrCd,signatureErrMsg,signatureErrStts);
             ErrorCode.MalformedJwt.initialize(malformedJwtErrCd,malformedJwtErrMsg,malformedJwtErrStts);
             ErrorCode.ExpiredJwtException.initialize(expiredJwtErrCd,expiredJwtErrMsg,expiredJwtErrStts);
+            ErrorCode.ExpiredRefreshJwtException.initialize(expiredRefreshJwtErrCd,expiredRefreshJwtErrMsg,expiredRefreshJwtErrStts);
         }
     }
 }

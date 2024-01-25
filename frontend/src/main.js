@@ -5,5 +5,4 @@ import store from './store';
 import apiInterceptors from './service/apiinterceptors';
 //apiInterceptors(store);
 apiInterceptors();
-
 createApp(App).use(store).use(router).mount('#app')

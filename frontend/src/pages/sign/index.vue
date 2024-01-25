@@ -51,7 +51,7 @@
 import {ref} from "vue";
 import {useToast} from "@/composables/toast";
 import AuthService from "@/service/auth/auth.service";
-
+import {useRouter} from "vue-router";
 export default {
   setup() {
     const signInfo = ref({
@@ -60,6 +60,7 @@ export default {
       name:'',
       age:0
     });
+    const router = useRouter();
     const {
           toastMessage,
           toastAlertType,
@@ -78,6 +79,7 @@ export default {
       AuthService.signUp(data).then(
           (res)=>{
               console.log(res);
+            router.push({name:"Home"})
           } ,
           (err)=>{
               console.log(err.response.data.code);

@@ -10,25 +10,17 @@
           Todos
         </router-link>
       </li>
-    </ul>
-
-    <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <router-link class="nav-link" :to="{ name: 'Login'}">
           Login
         </router-link>
       </li>
-    </ul>
-
-
-    <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <router-link class="nav-link" :to="{ name: 'Sign'}">
           Sign-In
         </router-link>
       </li>
     </ul>
-
   </nav>
 </template>
 

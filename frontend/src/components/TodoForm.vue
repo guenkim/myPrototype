@@ -129,7 +129,7 @@ export default {
       getTodo();
     }
 
-    const onSave = () => {
+    const onSave = async () => {
       subjectError.value = '';
       if (!todo.value.subject) {
         subjectError.value = 'Subject is required';
@@ -142,7 +142,7 @@ export default {
         body: todo.value.body,
       };
       if (props.editing) {
-        TodoService.updateTodo(todoId, data).then(
+        await TodoService.updateTodo(todoId, data).then(
             (res) => {
               originalTodo.value = {...res.data};
             }, (err) => {
@@ -153,7 +153,7 @@ export default {
             }
         );
       } else {
-        TodoService.createTodo(data).then(
+        await TodoService.createTodo(data).then(
             () => {
               todo.value.subject = '';
               todo.value.body = '';
@@ -169,11 +169,11 @@ export default {
       const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
       triggerToast(message);
 
-      if (!props.editing) {
-        router.push({
-          name: 'Todos'
-        })
-      }
+
+      router.push({
+        name: 'Todos'
+      });
+
     };
 
     return {

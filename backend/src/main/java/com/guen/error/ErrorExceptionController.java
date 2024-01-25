@@ -1,6 +1,7 @@
 package com.guen.error;
 
 
+import com.guen.jwt.exception.ExpiredRefreshJwtException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -76,7 +77,7 @@ public class ErrorExceptionController {
      *******************************************************************************/
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handleAccessDeniedException(Exception e) {
+    public ErrorResponse handleAccessDeniedException(AccessDeniedException e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.AccessDenied);
     }
@@ -84,23 +85,31 @@ public class ErrorExceptionController {
 
     @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse handleSignatureException(Exception e) {
+    public ErrorResponse handleSignatureException(SignatureException e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.Signature);
     }
 
     @ExceptionHandler(MalformedJwtException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse handleMalformedJwtException(Exception e) {
+    public ErrorResponse handleMalformedJwtException(MalformedJwtException e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.MalformedJwt);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<ErrorResponse> handleExpiredJwtException() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(buildError(ErrorCode.ExpiredJwtException));
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleExpiredJwtException(ExpiredJwtException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.ExpiredJwtException);
     }
 
+    @ExceptionHandler(ExpiredRefreshJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleExpiredRefreshJwtException(ExpiredRefreshJwtException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.ExpiredRefreshJwtException);
+    }
 
 
     // TODO: 2018. 5. 12. 비밀번호 변경 컨트롤러 생성시 주석 해제할것 -yun
