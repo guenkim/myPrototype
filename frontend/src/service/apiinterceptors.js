@@ -1,9 +1,7 @@
 import axiosInstance from "@/service/api";
-import {useRouter} from "vue-router";
+import CustomError from "@/error/CustomError";
 
-const router = useRouter();
-
-const setup = () => {
+const setup = (router) => {
     axiosInstance.interceptors.request.use(
         (config) => {
             if(config.url!='/sign-in' && !config.url!='/sign-up'){
@@ -39,6 +37,11 @@ const setup = () => {
                 localStorage.setItem("refreshToken",returnData.data.refreshToken);
             }
 
+            if(originalConfig.url=='/sign-out'){
+                localStorage.clear();
+                router.push({name: 'Home'});
+            }
+
             if(res.headers['newtoken']){
                 const newAccessToken = res.headers['newtoken'];
                 localStorage.removeItem("accessToken");
@@ -53,6 +56,13 @@ const setup = () => {
                 "URL: " + originalConfig.url+"\n"+
                 "ERR STATUS: " + err.response.status);
 
+            if(!err.response){
+                console.log("network error!");
+                const customErr = new CustomError("Network Error가 발생했습니다. 운영자에게 문의 하세요.","ERR-SERVER-XXX","400");
+                console.log(customErr.response.data.code);
+                return Promise.reject(customErr);
+            }
+
             if(originalConfig.url!='/sign-in' && !originalConfig.url!='/sign-up' && err.response){
                 if (err.response.status === 401) {
                     try {
@@ -60,9 +70,9 @@ const setup = () => {
                         if(err.response.data.code==='ERR-SERVER-6'){
                             console.log("@@@@@@@@@@@@ 로그인 해야 함 @@@@@@@@@@@@");
                             console.log("@@@@@@@@@@@@ 로그인 페이지 처리 미구현 @@@@@@@@@@@@");
-                            router.push({name: 'Login'}).catch(() => {});
+                            router.push({name: 'Login'});
                             // 이행되지 않는 Promise를 반환하여 Promise Chaining 끊어주기
-                            return new Promise(() => {});
+                            return Promise.reject(err);
                         }
                         originalConfig._retry = true;
                         originalConfig.headers['Refresh-Token'] = 'Bearer ' + localStorage.getItem('refreshToken');
@@ -73,6 +83,13 @@ const setup = () => {
                         }
                         return Promise.reject(err);
                     }
+                }
+
+                if (err.response.status === 403) {
+                    router.push({name: 'Home'});
+                    const customErr = new CustomError("접근 권한이 없네. 미안하다.","CODE-INFO","403");
+                    console.log(customErr.response.data.code);
+                    return Promise.reject(customErr);
                 }
             }
             console.log(err.response.status);

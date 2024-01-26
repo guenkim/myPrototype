@@ -8,10 +8,11 @@ import com.guen.sign.service.SignService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Tag(name = "회원 가입 및 로그인")
 @RequiredArgsConstructor
@@ -30,5 +31,11 @@ public class SignController {
     @PostMapping("/sign-in")
     public ApiResponse signIn(@RequestBody SignInRequest request) {
         return ApiResponse.success(signService.signIn(request));
+    }
+
+    @Operation(summary = "로그아웃")
+    @DeleteMapping("/sign-out")
+    public ApiResponse signOut(@AuthenticationPrincipal User user) {
+        return ApiResponse.success(signService.signOut(UUID.fromString(user.getUsername())));
     }
 }

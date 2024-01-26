@@ -3,6 +3,9 @@ package com.guen.sign.service;
 
 import com.guen.jwt.entity.MemberRefreshToken;
 import com.guen.jwt.repository.MemberRefreshTokenRepository;
+import com.guen.program.member.dto.request.MemberUpdateRequest;
+import com.guen.program.member.dto.response.MemberUpdateResponse;
+import com.guen.sign.Exception.NotValidIdOrPasswordException;
 import com.guen.sign.dto.sign_in.request.SignInRequest;
 import com.guen.sign.dto.sign_in.response.SignInResponse;
 import com.guen.sign.dto.sign_up.request.SignUpRequest;
@@ -15,6 +18,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -39,7 +44,7 @@ public class SignService {
     public SignInResponse signIn(SignInRequest request) {
         Member member = memberRepository.findByAccount(request.account())
                 .filter(it -> encoder.matches(request.password(), it.getPassword()))
-                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+                .orElseThrow(() -> new NotValidIdOrPasswordException("아이디 또는 비밀번호가 일치하지 않습니다."));
         String accessToken = tokenProvider.createAccessToken(String.format("%s:%s", member.getId(), member.getType()));
         String refreshToken = tokenProvider.createRefreshToken();
         memberRefreshTokenRepository.findById(member.getId())
@@ -48,5 +53,11 @@ public class SignService {
                         () -> memberRefreshTokenRepository.save(new MemberRefreshToken(member, refreshToken))
                 );
         return new SignInResponse(member.getName(), member.getType(), accessToken, refreshToken);
+    }
+
+    @Transactional
+    public Object signOut(UUID id) {
+        memberRefreshTokenRepository.deleteById(id);
+        return null;
     }
 }

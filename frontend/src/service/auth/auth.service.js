@@ -11,6 +11,10 @@ class AuthService {
         return  AxiosInst.post('/sign-up',data);
     }
 
+    signOut(){
+        return  AxiosInst.delete('/sign-out');
+    }
+
 }
 
 export default new AuthService();

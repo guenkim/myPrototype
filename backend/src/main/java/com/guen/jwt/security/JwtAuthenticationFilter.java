@@ -31,14 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
         try {
-                if(request.getRequestURI().equals("/api/sign-up") || request.getRequestURI()=="/api/sign-in"){
-                    filterChain.doFilter(request, response);
+                if(!request.getRequestURI().equals("/api/sign-up") && !request.getRequestURI().equals("/api/sign-in")){
+                    String accessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
+                    User user = parseUserSpecification(accessToken);
+                    AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user, accessToken, user.getAuthorities());
+                    authenticated.setDetails(new WebAuthenticationDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticated);
                 }
-                String accessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
-                User user = parseUserSpecification(accessToken);
-                AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user, accessToken, user.getAuthorities());
-                authenticated.setDetails(new WebAuthenticationDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticated);
         }
         catch (ExpiredJwtException e) {
             try{
@@ -58,10 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         catch (Exception e) {
-            logger.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
             request.setAttribute("exception", e);
         }
-
         filterChain.doFilter(request, response);
     }
 

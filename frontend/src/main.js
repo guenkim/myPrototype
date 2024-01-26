@@ -4,5 +4,5 @@ import router from './router';
 import store from './store';
 import apiInterceptors from './service/apiinterceptors';
 //apiInterceptors(store);
-apiInterceptors();
+apiInterceptors(router);
 createApp(App).use(store).use(router).mount('#app')

@@ -2,6 +2,7 @@ package com.guen.error;
 
 
 import com.guen.jwt.exception.ExpiredRefreshJwtException;
+import com.guen.sign.Exception.NotValidIdOrPasswordException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -63,6 +64,14 @@ public class ErrorExceptionController {
         log.error(e.getMessage());
         return buildError(ErrorCode.INPUT_VALUE_INVALID);
     }
+
+    @ExceptionHandler(NotValidIdOrPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse handleNotValidIdOrPasswordException(NotValidIdOrPasswordException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.NotValidIdOrPasswordException);
+    }
+
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
