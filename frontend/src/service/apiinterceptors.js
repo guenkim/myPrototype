@@ -1,5 +1,6 @@
 import axiosInstance from "@/service/api";
 import CustomError from "@/error/CustomError";
+import LocalstorageService from "@/service/storage/localstorage.service";
 
 const setup = (router) => {
     axiosInstance.interceptors.request.use(
@@ -7,10 +8,8 @@ const setup = (router) => {
             if(config.url!='/sign-in' && !config.url!='/sign-up'){
                 console.log(
                     "axiosInstance.interceptors.request >\n" + "URL: " + config.url);
-
-                const token = localStorage.getItem('accessToken');
+                const token = LocalstorageService.getAccessToken();
                 //config.headers['Refresh-Token'] = 'Bearer '+localStorage.getItem('refreshToken');
-
                 if (token) {
                     // for Spring Boot back-end
                     config.headers["Authorization"] = 'Bearer ' + token;
@@ -31,21 +30,24 @@ const setup = (router) => {
 
             if(originalConfig.url=='/sign-in'){
                 const returnData = {...res.data};
-                localStorage.clear();
+                LocalstorageService.clear();
                 // 로컬 스토리지에 저장
-                localStorage.setItem("accessToken",returnData.data.accessToken);
-                localStorage.setItem("refreshToken",returnData.data.refreshToken);
+                LocalstorageService.setAccessToken(returnData.data.accessToken);
+                LocalstorageService.setRefreshToken(returnData.data.refreshToken);
+                LocalstorageService.setUserId(returnData.data.id);
             }
 
             if(originalConfig.url=='/sign-out'){
-                localStorage.clear();
+                LocalstorageService.clear();
                 router.push({name: 'Home'});
             }
 
             if(res.headers['newtoken']){
                 const newAccessToken = res.headers['newtoken'];
-                localStorage.removeItem("accessToken");
-                localStorage.setItem("accessToken",newAccessToken);
+                LocalstorageService.removeAccessToken();
+                if(originalConfig.url!='/sign-out') {
+                    LocalstorageService.setAccessToken(newAccessToken);
+                }
             }
 
             return res;
@@ -75,7 +77,7 @@ const setup = (router) => {
                             return Promise.reject(err);
                         }
                         originalConfig._retry = true;
-                        originalConfig.headers['Refresh-Token'] = 'Bearer ' + localStorage.getItem('refreshToken');
+                        originalConfig.headers['Refresh-Token'] = 'Bearer ' + LocalstorageService.getRefreshToken();
                         return axiosInstance(originalConfig);
                     }catch(err){
                         if (err.response && err.response.data) {

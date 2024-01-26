@@ -52,7 +52,7 @@ public class SignService {
                         it -> it.updateRefreshToken(refreshToken),
                         () -> memberRefreshTokenRepository.save(new MemberRefreshToken(member, refreshToken))
                 );
-        return new SignInResponse(member.getName(), member.getType(), accessToken, refreshToken);
+        return new SignInResponse(member.getAccount(),member.getName(), member.getType(), accessToken, refreshToken);
     }
 
     @Transactional

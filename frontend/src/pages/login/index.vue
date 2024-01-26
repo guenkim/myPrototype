@@ -29,7 +29,7 @@
 import {ref} from "vue";
 import {useToast} from "@/composables/toast";
 import {useRouter} from "vue-router";
-import AuthService from "@/service/auth/auth.service";
+import {useStore} from "vuex";
 
 export default {
   setup() {
@@ -44,14 +44,15 @@ export default {
       showToast,
       triggerToast
     } = useToast();
-
+    const store = useStore();
     const onSave = () => {
       const data = {
         account: signInfo.value.account,
         password: signInfo.value.password
       };
 
-        AuthService.signIn(data).then(
+      store.dispatch('auth/signIn', data)
+        .then(
             (res) => {
               console.log(res);
               router.push({

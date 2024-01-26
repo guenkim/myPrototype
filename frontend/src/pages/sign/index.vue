@@ -50,8 +50,8 @@
 <script>
 import {ref} from "vue";
 import {useToast} from "@/composables/toast";
-import AuthService from "@/service/auth/auth.service";
 import {useRouter} from "vue-router";
+import {useStore} from "vuex";
 export default {
   setup() {
     const signInfo = ref({
@@ -67,7 +67,7 @@ export default {
           showToast,
           triggerToast
     } = useToast();
-
+    const store = useStore();
     const onSave =  () =>{
       const data = {
         account : signInfo.value.account,
@@ -75,8 +75,8 @@ export default {
         name : signInfo.value.name,
         age : signInfo.value.age
       };
-
-      AuthService.signUp(data).then(
+      store.dispatch('auth/signUp',data)
+      .then(
           (res)=>{
               console.log(res);
             router.push({name:"Home"})
