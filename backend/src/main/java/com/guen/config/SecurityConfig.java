@@ -26,7 +26,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.cors()
+        return
+                //spring security에 cors 허용
+                http.cors()
                 .and()
                 .csrf().disable()
                 // H2 콘솔 사용을 위한 설정
