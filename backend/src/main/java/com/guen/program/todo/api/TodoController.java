@@ -5,6 +5,7 @@ import com.guen.jwt.security.UserAuthorize;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoRes;
+import com.guen.program.todo.model.response.TodoSingleRes;
 import com.guen.program.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,9 +19,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -73,10 +76,12 @@ public class TodoController {
     ) {
         log.info("TodoController > getTodo");
         Optional<Todo> todo = todoService.findById(todoId);
-        return ResponseEntity.ok().body(new TodoRes(todo.get()));
+        //return ResponseEntity.ok().body(new TodoRes(todo.get()));
+        return ResponseEntity.ok().body(TodoSingleRes.builder().todo(todo.get()).build());
     }
 
-    @PostMapping
+
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_OCTET_STREAM_VALUE})
     @Operation(summary = "todo 생성")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "todo 생성 성공", content = @Content(schema = @Schema(hidden = true))),
@@ -84,10 +89,11 @@ public class TodoController {
             @ApiResponse(responseCode = "500", description = "내부 서버 오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity create(
-            @Valid @RequestBody TodoReq todoReq
+            @Valid @RequestPart(value = "todoReq") TodoReq todoReq,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) {
         log.info("TodoController > create");
-        todoService.save(todoReq);
+        Todo todo = todoService.save(todoReq,files);
         return ResponseEntity.noContent().build();
     }
 

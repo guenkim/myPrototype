@@ -45,8 +45,8 @@ public class TokenProvider {
         this.refreshExpirationHours = refreshExpirationHours;
         this.issuer = issuer;
         this.memberRefreshTokenRepository = memberRefreshTokenRepository;
-        //reissueLimit = refreshExpirationHours * 60 / expirationMinutes;
-        reissueLimit = 4;
+        reissueLimit = refreshExpirationHours * 60 / expirationMinutes;
+
     }
 
     public String createAccessToken(String userSpecification) {

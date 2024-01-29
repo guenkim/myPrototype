@@ -35,6 +35,22 @@
           <textarea v-model="todo.body" class="form-control" cols="30" rows="10"></textarea>
         </div>
       </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="files">Files</label>
+          <input type="file" multiple @change="handleFileChange" id="files" ref="fileInput">
+        </div>
+        <div v-if="editing"> 파일 목록
+          <ul>
+<!--            <li v-for="file in todo.files" :key="file.id" @click="downloadFile(file.id)">{{file.id}}  {{file.name}}</li>-->
+                <li v-for="file in todo.files" :key="file.id">
+                  <a @click="downloadFile(file.id,file.name)">{{file.id}}  {{file.name}}</a>
+                </li>
+          </ul>
+        </div>
+      </div>
+
     </div>
 
     <button
@@ -78,7 +94,8 @@ export default {
     const todo = ref({
       subject: '',
       completed: false,
-      body: ''
+      body: '',
+      files: []
     });
 
     const subjectError = ref('');
@@ -90,9 +107,31 @@ export default {
       showToast,
       triggerToast
     } = useToast();
-
     const todoId = route.params.id
+    const fileInput = ref(null);
+    const handleFileChange = () => {
+      //todo.value.files= fileInput.value;
 
+      // 여러 파일 선택 시, files 배열에 추가
+      todo.value.files = Array.from(fileInput.value.files);
+
+    }
+
+    const FileDownload = require('js-file-download');
+    const downloadFile = async (fileId,filename) =>{
+         await TodoService.downLoadFile(fileId).then(
+          (res)=>{
+            console.log(res);
+            FileDownload(res.data, filename);
+          },
+          (err)=>{
+            console.log(err.response.data.code);
+            console.log(err.response.data.message);
+            console.log(err.response.data.status);
+            triggerToast(err.response.data.message, 'danger');
+          }
+      )
+    }
     const getTodo = () => {
       loading.value = true;
       TodoService.getTodo(todoId).then(
@@ -136,15 +175,52 @@ export default {
         return;
       }
 
-      const data = {
-        subject: todo.value.subject,
-        completed: _.upperCase(todo.value.completed), //todo.value.completed
-        body: todo.value.body,
-      };
+      const formData = new FormData();
+      formData.append('todoReq'
+          ,new Blob([JSON.stringify({ subject: todo.value.subject, body: todo.value.body,completed: _.upperCase(todo.value.completed) })], {
+            type: 'application/json'
+          }));
+
+      // 여러 파일 추가
+      todo.value.files.forEach((file, index) => {
+        console.log(index);
+        formData.append('files', file);
+      });
+
+
+      // for (const entry of formData.entries()) {
+      //   const [key, value] = entry;
+      //   console.log(`FormData entry: ${key} - ${value}`);
+      //
+      //   // 만약 파일인 경우 파일 정보 출력
+      //   if (value instanceof File) {
+      //     console.log(`File: Name - ${value.name}, Size - ${value.size} bytes`);
+      //   }
+      // }
+
+
+      /*
+      for (const fileData of todo.value.files) {
+        formData.append('files',fileData);
+      }
+*/
+      /**
+       const data = {
+       subject: todo.value.subject,
+       completed: _.upperCase(todo.value.completed), //todo.value.completed
+       body: todo.value.body,
+       };
+       **/
+
       if (props.editing) {
-        await TodoService.updateTodo(todoId, data).then(
+        await TodoService.updateTodo(todoId, formData).then(
             (res) => {
               originalTodo.value = {...res.data};
+              const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
+              triggerToast(message);
+              router.push({
+                name: 'Todos'
+              });
             }, (err) => {
               console.log(err.response.data.code);
               console.log(err.response.data.message);
@@ -153,10 +229,18 @@ export default {
             }
         );
       } else {
-        await TodoService.createTodo(data).then(
+        await TodoService.createTodo(formData).then(
             () => {
               todo.value.subject = '';
               todo.value.body = '';
+              fileInput.value = '';
+              todo.value.files = [];
+
+              const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
+              triggerToast(message);
+              router.push({
+                name: 'Todos'
+              });
             }, (err) => {
               console.log(err.response.data.code);
               console.log(err.response.data.message);
@@ -165,15 +249,6 @@ export default {
             }
         );
       }
-
-      const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
-      triggerToast(message);
-
-
-      router.push({
-        name: 'Todos'
-      });
-
     };
 
     return {
@@ -187,6 +262,9 @@ export default {
       toastMessage,
       toastAlertType,
       subjectError,
+      handleFileChange,
+      fileInput,
+      downloadFile
     };
   }
 }

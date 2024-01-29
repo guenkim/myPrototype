@@ -1,18 +1,20 @@
 package com.guen.program.todo.service;
 
+import com.guen.common.file.model.entity.Files;
+import com.guen.common.file.repository.FileJpa;
+import com.guen.common.file.service.FileStorageService;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
-import com.guen.program.todo.model.response.TodoRes;
 import com.guen.program.todo.repository.jpa.pure.TodoPureRepository;
 import com.guen.program.todo.repository.jpa.querydsl.TodoJpa;
 import com.guen.program.todo.repository.jpa.springdata.TodoSpringDataRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class TodoService {
     private final TodoSpringDataRepository springDataRepo;
     //spring data jpa + queryDsl repo
     private final TodoJpa queryDslRepo;
+    private final FileStorageService fileStorageService;
+    private final FileJpa fileJpa;
 
     /******************************************
      *  mapper가 필요하다..
@@ -44,9 +48,14 @@ public class TodoService {
     }
 
     @Transactional
-    public void save(TodoReq todoReq){
+    public Todo save(TodoReq todoReq, List<MultipartFile> files){
         Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
         pureRepo.save(newTodo);
+
+        files.stream().map(file -> fileStorageService.storeFile(file))
+                .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
+
+        return newTodo;
     }
 
     @Transactional

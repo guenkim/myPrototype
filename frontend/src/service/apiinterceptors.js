@@ -54,6 +54,15 @@ const setup = (router) => {
         },
         async (err) => {
             const originalConfig = err.config;
+            if(err.response.headers['newtoken']){
+                const newAccessToken = err.response.headers['newtoken'];
+                LocalstorageService.removeAccessToken();
+                if(originalConfig.url!='/sign-out') {
+                    LocalstorageService.setAccessToken(newAccessToken);
+                }
+            }
+
+
             console.log("axiosInstance.interceptors.response >\n" +
                 "URL: " + originalConfig.url+"\n"+
                 "ERR STATUS: " + err.response.status);

@@ -35,5 +35,12 @@ public class InitRunner implements ApplicationRunner {
                 .name("관리자")
                 .type(MemberType.ADMIN)
                 .build());
+
+        memberRepository.save(Member.builder()
+                .account("user")
+                .password(encoder.encode("user"))
+                .name("사용자")
+                .type(MemberType.USER)
+                .build());
     }
 }

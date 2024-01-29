@@ -5,6 +5,12 @@ class TodoService {
         return  AxiosInst.get(`todos?subject=${searchText}&page=${page}&size=${limit}`);
     }
 
+    downLoadFile(fileId){
+        return  AxiosInst.get(`downloadFile/${fileId}`,{
+            responseType:"blob"
+        });
+    }
+
     deleteTodo(todoId){
         return AxiosInst.delete('todos/' + todoId);
     }
@@ -18,7 +24,11 @@ class TodoService {
     }
 
     createTodo(data){
-        return  AxiosInst.post('todos', data);
+        return  AxiosInst.post('todos', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     }
 
     updateTodo(todoId,data){
