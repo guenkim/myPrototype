@@ -36,7 +36,12 @@
         </div>
       </div>
 
-      <div class="col-12">
+      <div class="col-6">
+        <DragAndDropTodoForm
+            @updateFiles="modifiedFiles"
+        />
+      </div>
+      <div class="col-6">
         <div v-if="editing"> 파일 목록
           <ul>
             <li v-for="info in fileInfoList" :key="info.id">
@@ -47,11 +52,8 @@
           </ul>
         </div>
       </div>
-    </div>
 
-    <DragAndDropTodoForm
-        @updateFiles="modifiedFiles"
-    />
+    </div>
 
     <button
         type="submit"
@@ -173,8 +175,6 @@ export default {
     };
 
     const todoUpdated = computed(() => {
-      //console.log("todo.value:"+JSON.stringify(todo.value));
-      //console.log("originalTodo.value:"+JSON.stringify(originalTodo.value));
       let updateBoolean = false;
       if(!_.isEqual(todo.value, originalTodo.value)){
           updateBoolean = true;
@@ -182,7 +182,6 @@ export default {
           updateBoolean = true;
       }
       return updateBoolean;
-      //return !_.isEqual(todo.value, originalTodo.value);
     });
 
     const toggleTodoStatus = () => {
@@ -217,12 +216,6 @@ export default {
         console.log(index);
         formData.append('files', file);
       });
-      /**
-      todo.value.files.forEach((file, index) => {
-        console.log(index);
-        formData.append('files', file);
-      });
-      **/
 
       if (props.editing) {
         await TodoService.updateTodo(todoId, formData).then(
@@ -262,8 +255,6 @@ export default {
         );
       }
     };
-
-
     return {
       todo,
       loading,

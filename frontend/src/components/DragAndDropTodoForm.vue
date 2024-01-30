@@ -129,10 +129,11 @@ export default {
 .main {
   display: flex;
   flex-grow: 1;
-  align-items: center;
-  height: 100vh;
-  justify-content: center;
-  text-align: center;
+  align-items: left;
+  height: 18vh;
+  justify-content: left;
+  text-align: left;
+  margin-bottom: 2rem;
 }
 .dropzone-container {
   padding: 4rem;
@@ -159,7 +160,7 @@ export default {
   display: flex;
   border: 1px solid #a2a2a2;
   padding: 5px;
-  margin-left: 5px;
+  margin-left: 1px;
 }
 .preview-img {
   width: 50px;
