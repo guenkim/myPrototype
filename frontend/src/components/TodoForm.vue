@@ -37,21 +37,21 @@
       </div>
 
       <div class="col-12">
-        <div class="form-group">
-          <label for="files">Files</label>
-          <input type="file" multiple @change="handleFileChange" id="files" ref="fileInput">
-        </div>
         <div v-if="editing"> 파일 목록
           <ul>
-<!--            <li v-for="file in todo.files" :key="file.id" @click="downloadFile(file.id)">{{file.id}}  {{file.name}}</li>-->
-                <li v-for="file in todo.files" :key="file.id">
-                  <a @click="downloadFile(file.id,file.name)">{{file.id}}  {{file.name}}</a>
-                </li>
+            <li v-for="info in fileInfoList" :key="info.id">
+              {{info.name}}
+              <a @click="downloadFile(info.id,info.name)">[download]</a>
+              <a @click="removeFile(info.id,info.name)">[remove]</a>
+            </li>
           </ul>
         </div>
       </div>
-
     </div>
+
+    <DragAndDropTodoForm
+        @updateFiles="modifiedFiles"
+    />
 
     <button
         type="submit"
@@ -76,10 +76,12 @@ import _ from 'lodash';
 import {useToast} from '@/composables/toast';
 import Input from '@/components/Input.vue';
 import TodoService from "@/service/todo/todo.service";
+import DragAndDropTodoForm from "@/components/DragAndDropTodoForm.vue";
 
 export default {
   components: {
-    Input
+    Input,
+    DragAndDropTodoForm
   },
   props: {
     editing: {
@@ -97,6 +99,8 @@ export default {
       body: '',
       files: []
     });
+    let fileInfoList = ref([]);
+    let realFileArr = ref([]);
 
     const subjectError = ref('');
     const originalTodo = ref(null);
@@ -107,19 +111,25 @@ export default {
       showToast,
       triggerToast
     } = useToast();
-    const todoId = route.params.id
-    const fileInput = ref(null);
-    const handleFileChange = () => {
-      //todo.value.files= fileInput.value;
+    const todoId = route.params.id;
+    // const fileInput = ref(null);
+    // const handleFileChange = () => {
+    //   //todo.value.files= fileInput.value;
+    //   // 여러 파일 선택 시, files 배열에 추가
+    //   todo.value.files = Array.from(fileInput.value.files);
+    //
+    // }
 
-      // 여러 파일 선택 시, files 배열에 추가
-      todo.value.files = Array.from(fileInput.value.files);
-
-    }
+    const modifiedFiles = (inputFile)=>{
+      console.log("file size:"+inputFile.value.length);
+      //realFileArr.value=[];
+      realFileArr.value= inputFile.value;
+      //console.log(inputFile.value instanceof  Array);
+    };
 
     const FileDownload = require('js-file-download');
     const downloadFile = async (fileId,filename) =>{
-         await TodoService.downLoadFile(fileId).then(
+      await TodoService.downLoadFile(fileId).then(
           (res)=>{
             console.log(res);
             FileDownload(res.data, filename);
@@ -131,7 +141,34 @@ export default {
             triggerToast(err.response.data.message, 'danger');
           }
       )
-    }
+    };
+
+    const removeFile = async (fileId,filename) =>{
+      console.log(filename);
+      await TodoService.removeFile(fileId).then(
+          (res)=>{
+            console.log(res);
+
+            //const removeFile = fileInfoList.value.filter(file => _.isEqual(fileId,file.id));
+            let number = fileInfoList.value.findIndex(file=>_.isEqual(fileId,file.id));
+
+            console.log("fileInfoList size :" + fileInfoList.value.length);
+            console.log("index:"+number);
+            fileInfoList.value.splice(number,1);
+            //fileInfoList = [];
+            console.log("fileInfoList size :" + fileInfoList.value.length);
+
+            triggerToast("파일이 삭제 되었습니다.", 'success');
+          },
+          (err)=>{
+            console.log(err.response.data.code);
+            console.log(err.response.data.message);
+            console.log(err.response.data.status);
+            triggerToast(err.response.data.message, 'danger');
+          }
+      )
+    };
+
     const getTodo = () => {
       loading.value = true;
       TodoService.getTodo(todoId).then(
@@ -139,6 +176,7 @@ export default {
             todo.value = {...res.data};
             originalTodo.value = {...res.data};
             loading.value = false;
+            fileInfoList.value = [...res.data.files];
           },
           (err) => {
             loading.value = false;
@@ -151,7 +189,16 @@ export default {
     };
 
     const todoUpdated = computed(() => {
-      return !_.isEqual(todo.value, originalTodo.value)
+      //console.log("todo.value:"+JSON.stringify(todo.value));
+      //console.log("originalTodo.value:"+JSON.stringify(originalTodo.value));
+      let updateBoolean = false;
+      if(!_.isEqual(todo.value, originalTodo.value)){
+          updateBoolean = true;
+      }if(!_.isEqual(realFileArr.value.length , 0)){
+          updateBoolean = true;
+      }
+      return updateBoolean;
+      //return !_.isEqual(todo.value, originalTodo.value);
     });
 
     const toggleTodoStatus = () => {
@@ -182,35 +229,16 @@ export default {
           }));
 
       // 여러 파일 추가
+      realFileArr.value.forEach((file, index) => {
+        console.log(index);
+        formData.append('files', file);
+      });
+      /**
       todo.value.files.forEach((file, index) => {
         console.log(index);
         formData.append('files', file);
       });
-
-
-      // for (const entry of formData.entries()) {
-      //   const [key, value] = entry;
-      //   console.log(`FormData entry: ${key} - ${value}`);
-      //
-      //   // 만약 파일인 경우 파일 정보 출력
-      //   if (value instanceof File) {
-      //     console.log(`File: Name - ${value.name}, Size - ${value.size} bytes`);
-      //   }
-      // }
-
-
-      /*
-      for (const fileData of todo.value.files) {
-        formData.append('files',fileData);
-      }
-*/
-      /**
-       const data = {
-       subject: todo.value.subject,
-       completed: _.upperCase(todo.value.completed), //todo.value.completed
-       body: todo.value.body,
-       };
-       **/
+      **/
 
       if (props.editing) {
         await TodoService.updateTodo(todoId, formData).then(
@@ -233,7 +261,7 @@ export default {
             () => {
               todo.value.subject = '';
               todo.value.body = '';
-              fileInput.value = '';
+              // fileInput.value = '';
               todo.value.files = [];
 
               const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
@@ -251,6 +279,7 @@ export default {
       }
     };
 
+
     return {
       todo,
       loading,
@@ -262,9 +291,10 @@ export default {
       toastMessage,
       toastAlertType,
       subjectError,
-      handleFileChange,
-      fileInput,
-      downloadFile
+      downloadFile,
+      modifiedFiles,
+      fileInfoList,
+      removeFile
     };
   }
 }

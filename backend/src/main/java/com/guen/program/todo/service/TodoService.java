@@ -52,17 +52,25 @@ public class TodoService {
         Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
         pureRepo.save(newTodo);
 
-        files.stream().map(file -> fileStorageService.storeFile(file))
-                .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
+        if(files!=null) {
+            files.stream().map(file -> fileStorageService.storeFile(file))
+                    .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
+        }
 
         return newTodo;
     }
 
     @Transactional
-    public void updateById(String todoId,TodoReq todoReq){
+    public void updateById(String todoId,TodoReq todoReq, List<MultipartFile> files){
         Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
         newTodo.setId(Long.valueOf(todoId));
         pureRepo.updateById(newTodo);
+
+        if(files!=null) {
+            files.stream().map(file -> fileStorageService.storeFile(file))
+                    .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
+        }
+
     }
 
     @Transactional

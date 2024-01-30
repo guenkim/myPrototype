@@ -5,10 +5,22 @@ class TodoService {
         return  AxiosInst.get(`todos?subject=${searchText}&page=${page}&size=${limit}`);
     }
 
+    createTodo(data){
+        return  AxiosInst.post('todos', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    }
+
     downLoadFile(fileId){
-        return  AxiosInst.get(`downloadFile/${fileId}`,{
+        return  AxiosInst.get(`file/${fileId}`,{
             responseType:"blob"
         });
+    }
+
+    removeFile(fileId){
+        return  AxiosInst.delete(`file/${fileId}`);
     }
 
     deleteTodo(todoId){
@@ -23,16 +35,12 @@ class TodoService {
         return AxiosInst.get(`todos/${todoId}`);
     }
 
-    createTodo(data){
-        return  AxiosInst.post('todos', data, {
+    updateTodo(todoId,data){
+        return AxiosInst.put(`todos/${todoId}`, data,{
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-    }
-
-    updateTodo(todoId,data){
-        return AxiosInst.put(`todos/${todoId}`, data);
     }
 
 }

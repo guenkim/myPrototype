@@ -5,10 +5,9 @@
 
 <script>
 import TodoForm from '@/components/TodoForm.vue';
-
 export default {
     components: {
-        TodoForm
+        TodoForm,
     }
 }
 </script>

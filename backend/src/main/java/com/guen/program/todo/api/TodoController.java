@@ -108,10 +108,11 @@ public class TodoController {
     public ResponseEntity update(
             @Parameter(description = "todo 아이디", required = true, in = ParameterIn.PATH)
             @PathVariable(value = "todoId", required = true) String todoId,
-            @Valid @RequestBody TodoReq todoReq
+            @Valid @RequestPart(value = "todoReq") TodoReq todoReq,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) {
         log.info("TodoController > update");
-        todoService.updateById(todoId,todoReq);
+        todoService.updateById(todoId,todoReq,files);
         return ResponseEntity.noContent().build();
     }
 

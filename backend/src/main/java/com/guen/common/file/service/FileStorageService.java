@@ -80,4 +80,8 @@ public class FileStorageService {
             throw new FileNotFoundException("존재하지 않는 파일입니다.");
         }
     }
+
+    public void deleteFileById(Long fileId){
+        fileJpa.deleteById(fileId);
+    }
 }
