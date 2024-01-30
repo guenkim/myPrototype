@@ -46,6 +46,13 @@ public class Todo {
         this.subject = subject;
         this.body = body;
         this.completed = completed;
+        this.files = files;
+    }
+    public Todo(String subject, String body, Complete completed,List<Files> files) {
+        this.subject = subject;
+        this.body = body;
+        this.completed = completed;
+        this.files = files;
     }
 
     public Todo(Long id, String subject, String body, Complete completed) {
@@ -53,5 +60,9 @@ public class Todo {
         this.subject = subject;
         this.body = body;
         this.completed = completed;
+    }
+
+    public void updateFiles(List<Files> files){
+        this.files = files;
     }
 }

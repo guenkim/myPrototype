@@ -17,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,12 +52,14 @@ public class TodoService {
     @Transactional
     public Todo save(TodoReq todoReq, List<MultipartFile> files){
         Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
-        pureRepo.save(newTodo);
-
+        List<Files> filesList = new ArrayList<>();
         if(files!=null) {
-            files.stream().map(file -> fileStorageService.storeFile(file))
-                    .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
+            filesList = files.stream().map(file -> fileStorageService.storeFile(file))
+            .map(filename -> Files.builder().fileName(filename).todo(newTodo).build())
+            .collect(Collectors.toList());
         }
+        newTodo.updateFiles(filesList);
+        pureRepo.save(newTodo);
 
         return newTodo;
     }
@@ -70,7 +74,6 @@ public class TodoService {
             files.stream().map(file -> fileStorageService.storeFile(file))
                     .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
         }
-
     }
 
     @Transactional
