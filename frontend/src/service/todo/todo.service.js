@@ -13,6 +13,14 @@ class TodoService {
         });
     }
 
+    updateTodo(todoId,data){
+        return AxiosInst.put(`todos/${todoId}`, data,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    }
+
     downLoadFile(fileId){
         return  AxiosInst.get(`file/${fileId}`,{
             responseType:"blob"
@@ -33,14 +41,6 @@ class TodoService {
 
     getTodo(todoId){
         return AxiosInst.get(`todos/${todoId}`);
-    }
-
-    updateTodo(todoId,data){
-        return AxiosInst.put(`todos/${todoId}`, data,{
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
     }
 
 }

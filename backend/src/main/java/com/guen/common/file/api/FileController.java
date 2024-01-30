@@ -42,7 +42,9 @@ public class FileController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "존재 하지 않는 파일 입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId, HttpServletRequest request) throws IOException, FileNotFoundException {
+    public ResponseEntity<Resource> downloadFile(
+            @Parameter(description = "파일 아이디", required = true, in = ParameterIn.PATH)
+            @PathVariable String fileId, HttpServletRequest request) throws IOException, FileNotFoundException {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(Long.parseLong(fileId));
 

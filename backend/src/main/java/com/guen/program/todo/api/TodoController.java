@@ -81,7 +81,7 @@ public class TodoController {
     }
 
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "todo 생성")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "todo 생성 성공", content = @Content(schema = @Schema(hidden = true))),
