@@ -93,19 +93,12 @@ export default {
 
     // Methods
     const onChange = () => {
-      //files.value = [...this.$refs.fileInput.files];
       files.value = [...fileInput.value.files];
-      console.log("file size:" + files.value.length);
       //변경된 파일을 상위 컴포넌트에 전달
       Context.emit('updateFiles',files);
-      //this.files = [...this.$refs.file.files];
-      //[...this.$refs.file.files];
     };
     const drop = (e) => {
       e.preventDefault();
-      //fileInput.value.files = e.dataTransfer.files;
-      //this.$refs.fileInput.files = e.dataTransfer.files;
-      //this.$refs.fileInput.files = e.dataTransfer.files;
       fileInput.value.files = e.dataTransfer.files;
       onChange();
       isDragging.value = false;

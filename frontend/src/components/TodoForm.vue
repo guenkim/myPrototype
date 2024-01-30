@@ -112,19 +112,9 @@ export default {
       triggerToast
     } = useToast();
     const todoId = route.params.id;
-    // const fileInput = ref(null);
-    // const handleFileChange = () => {
-    //   //todo.value.files= fileInput.value;
-    //   // 여러 파일 선택 시, files 배열에 추가
-    //   todo.value.files = Array.from(fileInput.value.files);
-    //
-    // }
 
     const modifiedFiles = (inputFile)=>{
-      console.log("file size:"+inputFile.value.length);
-      //realFileArr.value=[];
       realFileArr.value= inputFile.value;
-      //console.log(inputFile.value instanceof  Array);
     };
 
     const FileDownload = require('js-file-download');
@@ -148,16 +138,10 @@ export default {
       await TodoService.removeFile(fileId).then(
           (res)=>{
             console.log(res);
-
-            //const removeFile = fileInfoList.value.filter(file => _.isEqual(fileId,file.id));
-            let number = fileInfoList.value.findIndex(file=>_.isEqual(fileId,file.id));
-
-            console.log("fileInfoList size :" + fileInfoList.value.length);
-            console.log("index:"+number);
-            fileInfoList.value.splice(number,1);
-            //fileInfoList = [];
-            console.log("fileInfoList size :" + fileInfoList.value.length);
-
+            const number = fileInfoList.value.findIndex(file=>_.isEqual(fileId,file.id));
+            if (number !== -1) {
+              fileInfoList.value.splice(number, 1);
+            }
             triggerToast("파일이 삭제 되었습니다.", 'success');
           },
           (err)=>{
