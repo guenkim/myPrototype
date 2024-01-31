@@ -29,18 +29,27 @@ public class InitRunner implements ApplicationRunner {
 
         log.info("\n ================================== db 임시 데이터 저장  ========================= \n");
         log.info("\n ================================== admin 임시 데이터 저장  ========================= \n");
-        memberRepository.save(Member.builder()
-                .account("admin")
-                .password(encoder.encode("admin"))
-                .name("관리자")
-                .type(MemberType.ADMIN)
-                .build());
-
-        memberRepository.save(Member.builder()
-                .account("user")
-                .password(encoder.encode("user"))
-                .name("사용자")
-                .type(MemberType.USER)
-                .build());
+        memberRepository.findByAccount("admin").ifPresentOrElse(
+                member-> System.out.println("admin 존재"),
+                ()-> {
+                    memberRepository.save(Member.builder()
+                        .account("admin")
+                        .password(encoder.encode("admin"))
+                        .name("관리자")
+                        .type(MemberType.ADMIN)
+                        .build());
+                }
+        );
+        memberRepository.findByAccount("user").ifPresentOrElse(
+                member-> System.out.println("user 존재"),
+                ()-> {
+                    memberRepository.save(Member.builder()
+                            .account("user")
+                            .password(encoder.encode("user"))
+                            .name("사용자")
+                            .type(MemberType.USER)
+                            .build());
+                }
+        );
     }
 }

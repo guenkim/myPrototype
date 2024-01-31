@@ -57,10 +57,17 @@ public class ErrorExceptionController {
         return buildFieldErrors(ErrorCode.INPUT_VALUE_INVALID, fieldErrors);
     }
 
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.INPUT_VALUE_INVALID);
+    }
+
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse handleIllegalArgumentException(IllegalArgumentException e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.INPUT_VALUE_INVALID);
     }
@@ -71,7 +78,6 @@ public class ErrorExceptionController {
         log.error(e.getMessage());
         return buildError(ErrorCode.NotValidIdOrPasswordException);
     }
-
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -135,7 +141,7 @@ public class ErrorExceptionController {
                 .map(error -> ErrorResponse.FieldError.builder()
                         .reason(error.getDefaultMessage())
                         .field(error.getField())
-                        .value((String) error.getRejectedValue())
+                        .value(error.getRejectedValue().toString())
                         .build())
                 .collect(Collectors.toList());
     }

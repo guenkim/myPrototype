@@ -75,7 +75,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- swagger -->
+         <!--swagger-->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.7.0</version>
+            <version>1.6.6</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -130,6 +130,13 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
             <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--hot deploy : 재기동 없이 반영-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
