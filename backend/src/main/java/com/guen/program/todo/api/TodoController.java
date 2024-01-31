@@ -1,6 +1,7 @@
 package com.guen.program.todo.api;
 
 import com.guen.common.model.PageRequest;
+import com.guen.error.ErrorResponse;
 import com.guen.jwt.security.UserAuthorize;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.request.TodoReq;
@@ -21,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

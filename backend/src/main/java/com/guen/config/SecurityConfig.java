@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationEntryPoint entryPoint;
 
-    private static final String[] ALLOWED_URIS = {"/api/sign-up", "/api/sign-in"};
+    private static final String[] ALLOWED_URIS = {"/", "/swagger-ui/**", "/v3/**","/api/sign-up", "/api/sign-in"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
