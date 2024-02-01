@@ -2,6 +2,7 @@ package com.guen.common.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Getter;
@@ -14,18 +15,18 @@ import lombok.Setter;
 public final class PageRequest {
 
 
-    @Nullable
+    @NotBlank
     @Schema(description = "검색어", example = "검색어....",required = false)
     private String subject;
 
     @Schema(description = "요청페이지", example = "1" ,required = false)
     @Positive
-    @Nullable
+    @NotBlank
     private int page=1;
 
     @Schema(description = "페이지당 아티클수", example = "10",required = false)
     @Positive
-    @Nullable
+    @NotBlank
     private int size=10;
 
     //    private Sort.Direction direction;

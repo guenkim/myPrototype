@@ -9,6 +9,7 @@ import com.guen.program.todo.model.response.TodoRes;
 import com.guen.program.todo.model.response.TodoSingleRes;
 import com.guen.program.todo.service.TodoService;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,52 +33,45 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "Todo API")
 @Slf4j
 @RestController
 @RequestMapping("/api/todos")
-@Tag(name = "Todo API")
 @UserAuthorize
 @RequiredArgsConstructor
-//@Hidden
 public class TodoController {
 
     private final TodoService todoService;
 
 
-    @GetMapping
     @Operation(summary = "todo 목록 반환")
+    //@Hidden
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공"),
+            @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공",  content = @Content(schema = @Schema(implementation = Page.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public Page<TodoRes> getTodos(
-            //@Parameter(description = "검색어", required = false, in = ParameterIn.QUERY)
-            //@RequestParam(name = "subject" , required = false) final String subject,
-//          @Parameter(description = "페이지 정보", required = false, in = ParameterIn.QUERY)
-            //@RequestParam(required = false) @Valid final PageRequest pageRequest
-            //@Valid final @ParameterObject PageRequest pageRequest
-            //query string 요청
+    @GetMapping
+    public ResponseEntity getTodos(
             @ParameterObject @Valid final PageRequest pageRequest
     ){
         log.info("TodoController > getTodos");
-        return todoService.search(pageRequest.getSubject(), pageRequest.of()).map(TodoRes::new);
+        return ResponseEntity.ok().body(todoService.search(pageRequest.getSubject(), pageRequest.of()).map(TodoRes::new));
     }
-
 
     @GetMapping("/{todoId}")
     @Operation(summary = "todo 반환")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "todo 정보 조회 성공"),
+            @ApiResponse(responseCode = "200", description = "todo 정보 조회 성공",  content = @Content(schema = @Schema(implementation = TodoSingleRes.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
     })
     public ResponseEntity getTodo(
-            @Parameter(description = "todo 아이디", required = true, in = ParameterIn.PATH) // @ApiParam : Parameter 설명
+            @Parameter(description = "todo 아이디", required = true, in = ParameterIn.PATH)
             @PathVariable(value = "todoId", required = true) String todoId
     ) {
         log.info("TodoController > getTodo");
+        //todo 에러처리 해야 함
         Optional<Todo> todo = todoService.findById(todoId);
-        //return ResponseEntity.ok().body(new TodoRes(todo.get()));
         return ResponseEntity.ok().body(TodoSingleRes.builder().todo(todo.get()).build());
     }
 
@@ -90,8 +84,10 @@ public class TodoController {
             @ApiResponse(responseCode = "500", description = "내부 서버 오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity create(
-            @Valid @RequestPart(value = "todoReq")  TodoReq todoReq,
-            @RequestPart(value = "files", required = false) List<MultipartFile> files
+            @Parameter(description = "The todoReq part of the request",required = true)
+            @Valid @RequestPart(value="todoReq", required = true) final    TodoReq todoReq,
+            @Parameter(description = "The files part of the request",required = false)
+            @RequestPart(value = "files", required = false) final  List<MultipartFile> files
     ) {
         log.info("TodoController > create");
         Todo todo = todoService.save(todoReq,files);
@@ -109,8 +105,10 @@ public class TodoController {
     public ResponseEntity update(
             @Parameter(description = "todo 아이디", required = true, in = ParameterIn.PATH)
             @PathVariable(value = "todoId", required = true) String todoId,
-            @Valid @RequestPart(value = "todoReq") TodoReq todoReq,
-            @RequestPart(value = "files", required = false) List<MultipartFile> files
+            @Parameter(description = "The todoReq part of the request",required = true)
+            @Valid @RequestPart(value="todoReq", required = true) final    TodoReq todoReq,
+            @Parameter(description = "The files part of the request",required = false)
+            @RequestPart(value = "files", required = false) final  List<MultipartFile> files
     ) {
         log.info("TodoController > update");
         todoService.updateById(todoId,todoReq,files);

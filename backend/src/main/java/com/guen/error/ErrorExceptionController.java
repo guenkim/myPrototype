@@ -7,6 +7,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -141,7 +142,7 @@ public class ErrorExceptionController {
                 .map(error -> ErrorResponse.FieldError.builder()
                         .reason(error.getDefaultMessage())
                         .field(error.getField())
-                        .value(error.getRejectedValue().toString())
+                        .value(error.getRejectedValue().equals(null) ? "" : error.getRejectedValue().toString())
                         .build())
                 .collect(Collectors.toList());
     }
