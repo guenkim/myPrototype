@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,17 +46,18 @@ public class TodoController {
 
     @GetMapping
     @Operation(summary = "todo 목록 반환")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공"),
-//            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-//    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public Page<TodoRes> getTodos(
             //@Parameter(description = "검색어", required = false, in = ParameterIn.QUERY)
             //@RequestParam(name = "subject" , required = false) final String subject,
 //          @Parameter(description = "페이지 정보", required = false, in = ParameterIn.QUERY)
             //@RequestParam(required = false) @Valid final PageRequest pageRequest
             //@Valid final @ParameterObject PageRequest pageRequest
-            @ParameterObject PageRequest pageRequest
+            //query string 요청
+            @ParameterObject @Valid final PageRequest pageRequest
     ){
         log.info("TodoController > getTodos");
         return todoService.search(pageRequest.getSubject(), pageRequest.of()).map(TodoRes::new);
