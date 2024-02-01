@@ -19,6 +19,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -142,7 +143,7 @@ public class ErrorExceptionController {
                 .map(error -> ErrorResponse.FieldError.builder()
                         .reason(error.getDefaultMessage())
                         .field(error.getField())
-                        .value(error.getRejectedValue().equals(null) ? "" : error.getRejectedValue().toString())
+                        .value(Objects.requireNonNull(error.getRejectedValue().toString(),""))
                         .build())
                 .collect(Collectors.toList());
     }
