@@ -2,15 +2,12 @@ package com.guen.program.todo.model.entity;
 
 
 import com.guen.common.file.model.entity.Files;
-import com.guen.common.model.entity.File;
 import com.guen.program.todo.model.enumclass.Complete;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.guen.common.model.entity;
+package com.guen.common.file.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.guen.program.todo.model.entity.Todo;
