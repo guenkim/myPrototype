@@ -78,7 +78,7 @@ export default {
           .then(
               (response) => {
                 console.log(response);
-                numberOfTodos.value = response.data.totalElements;
+                numberOfTodos.value = response.data.totalCount;
                 todos.value = response.data.content;
               },
               (err) => {

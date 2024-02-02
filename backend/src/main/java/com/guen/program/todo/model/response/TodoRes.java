@@ -27,11 +27,11 @@ public class TodoRes {
     @Schema(description = "todo 완료 여부", nullable = false, example = "TRUE or FALSE",defaultValue = "FALSE" )
     private Boolean completed;
 
-    public TodoRes(Todo todo) {
-        this.id = todo.getId();
-        this.subject = todo.getSubject();
-        this.body = todo.getBody();
-        this.completed = todo.getCompleted()==Complete.FALSE ? Boolean.FALSE : Boolean.TRUE;
+    @Builder
+    public TodoRes(Long id, String subject, String body, Boolean completed) {
+        this.id = id;
+        this.subject = subject;
+        this.body = body;
+        this.completed = completed;
     }
-
 }

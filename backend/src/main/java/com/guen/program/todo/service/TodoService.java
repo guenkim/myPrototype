@@ -3,14 +3,15 @@ package com.guen.program.todo.service;
 import com.guen.common.file.model.entity.Files;
 import com.guen.common.file.repository.FileJpa;
 import com.guen.common.file.service.FileStorageService;
+import com.guen.common.model.PageResponse;
+import com.guen.program.todo.exception.TodoNotFindException;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
-import com.guen.program.todo.repository.jpa.pure.TodoPureRepository;
-import com.guen.program.todo.repository.jpa.querydsl.TodoJpa;
-import com.guen.program.todo.repository.jpa.springdata.TodoSpringDataRepository;
+import com.guen.program.todo.model.response.TodoRes;
+import com.guen.program.todo.model.response.TodoSingleRes;
+import com.guen.program.todo.repository.jpa.TodoJpa;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TodoService {
-    //순수 jpa repo
-    private final TodoPureRepository pureRepo;
-    //spring data jpa repo
-    private final TodoSpringDataRepository springDataRepo;
-    //spring data jpa + queryDsl repo
-    private final TodoJpa queryDslRepo;
+
     private final FileStorageService fileStorageService;
     private final FileJpa fileJpa;
+    private final TodoJpa todoJpa;
 
     /******************************************
      *  mapper가 필요하다..
@@ -41,16 +37,18 @@ public class TodoService {
      ******************************************/
 
 
-    public Page<Todo> search(final String subject, final Pageable pageable){
-        return queryDslRepo.search(subject,pageable);
+    public PageResponse search(final String subject, final Pageable pageable){
+        return todoJpa.search(subject,pageable);
     }
 
-    public Optional<Todo> findById(String todoId){
-        return queryDslRepo.findById(Long.valueOf(todoId));
+    public TodoSingleRes findById(final String todoId){
+        Todo todo = todoJpa.findById(Long.valueOf(todoId))
+                .orElseThrow(() -> new TodoNotFindException("요청하신 todo가 없습니다."));
+        return todo.toTodoSingleRes();
     }
 
     @Transactional
-    public Todo save(TodoReq todoReq, List<MultipartFile> files){
+    public Todo save(final TodoReq todoReq, final List<MultipartFile> files){
         Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
         List<Files> filesList = new ArrayList<>();
         if(files!=null) {
@@ -59,33 +57,38 @@ public class TodoService {
             .collect(Collectors.toList());
         }
         newTodo.updateFiles(filesList);
-        pureRepo.save(newTodo);
+        todoJpa.save(newTodo);
 
         return newTodo;
     }
 
     @Transactional
-    public void updateById(String todoId,TodoReq todoReq, List<MultipartFile> files){
-        Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
-        newTodo.setId(Long.valueOf(todoId));
-        pureRepo.updateById(newTodo);
+    public void updateById(final String todoId,final TodoReq todoReq,final List<MultipartFile> files){
+        Todo todo = todoJpa.findById(Long.valueOf(todoId)).orElseThrow(
+                () -> new TodoNotFindException("요청하신 todo가 없습니다.")
+        );
+        todo.updateTodo(todoReq);
 
         if(files!=null) {
             files.stream().map(file -> fileStorageService.storeFile(file))
-                    .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(newTodo).build()));
+                    .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(todo).build()));
         }
     }
 
     @Transactional
-    public void remove(String todoId){
-        Optional<Todo> todo = queryDslRepo.findById(Long.valueOf(todoId));
-        pureRepo.remove(todo.get());
+    public void remove(final String todoId){
+        Todo todo = todoJpa.findById(Long.valueOf(todoId)).orElseThrow(
+                () -> new TodoNotFindException("요청하신 todo가 없습니다.")
+        );
+        todoJpa.delete(todo);
     }
 
     @Transactional
-    public void updateCompleteById(String todoId , boolean reqComplete){
-        Complete complete = reqComplete ? Complete.TRUE : Complete.FALSE;
-        pureRepo.updateCompleteById(Long.parseLong(todoId),complete);
+    public void updateCompleteById(final String todoId ,final Complete complete){
+        Todo todo = todoJpa.findById(Long.parseLong(todoId)).orElseThrow(
+                () -> new TodoNotFindException("요청하신 todo가 없습니다.")
+        );
+        todo.updateStatus(complete);
     }
 
 }

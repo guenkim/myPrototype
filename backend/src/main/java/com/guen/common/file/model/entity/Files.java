@@ -1,5 +1,7 @@
 package com.guen.common.file.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.guen.program.todo.model.entity.Todo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +21,7 @@ public class Files {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Todo todo;
 
     @Builder

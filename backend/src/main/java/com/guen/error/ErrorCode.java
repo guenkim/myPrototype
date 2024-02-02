@@ -17,7 +17,10 @@ public enum ErrorCode {
     MalformedJwt,
     ExpiredJwtException,
     ExpiredRefreshJwtException,
-    NotValidIdOrPasswordException
+    NotValidIdOrPasswordException,
+    TodoNotFindException,
+    ConstraintViolationException,
+    PathVariableException
     ;
 
     private String code;
@@ -117,6 +120,39 @@ public enum ErrorCode {
         @NotBlank
         private int notValidIdOrPasswordErrStts;
 
+        @Value("${error.TodoNotFindException.code}")
+        @NotBlank
+        private String todoNotFindErrCd;
+        @Value("${error.TodoNotFindException.message}")
+        @NotBlank
+        private String todoNotFindErrMsg;
+        @Value("${error.TodoNotFindException.status}")
+        @NotBlank
+        private int todoNotFindErrStts;
+
+        @Value("${error.ConstraintViolationException.code}")
+        @NotBlank
+        private String constraintViolationErrCd;
+        @Value("${error.ConstraintViolationException.message}")
+        @NotBlank
+        private String constraintViolationErrMsg;
+        @Value("${error.ConstraintViolationException.status}")
+        @NotBlank
+        private int constraintViolationErrStts;
+
+
+
+        @Value("${error.PathVariableException.code}")
+        @NotBlank
+        private String pathVariableExceptionErrCd;
+        @Value("${error.PathVariableException.message}")
+        @NotBlank
+        private String pathVariableExceptionErrMsg;
+        @Value("${error.PathVariableException.status}")
+        @NotBlank
+        private int pathVariableExceptionErrStts;
+
+
 
 
         public void init(){
@@ -130,7 +166,9 @@ public enum ErrorCode {
             ErrorCode.ExpiredJwtException.initialize(expiredJwtErrCd,expiredJwtErrMsg,expiredJwtErrStts);
             ErrorCode.ExpiredRefreshJwtException.initialize(expiredRefreshJwtErrCd,expiredRefreshJwtErrMsg,expiredRefreshJwtErrStts);
 
-
+            ErrorCode.TodoNotFindException.initialize(todoNotFindErrCd,todoNotFindErrMsg,todoNotFindErrStts);
+            ErrorCode.ConstraintViolationException.initialize(constraintViolationErrCd,constraintViolationErrMsg,constraintViolationErrStts);
+            ErrorCode.PathVariableException.initialize(pathVariableExceptionErrCd,pathVariableExceptionErrMsg,pathVariableExceptionErrStts);
 
         }
     }

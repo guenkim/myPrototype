@@ -25,26 +25,26 @@ public class TodoSingleRes {
     @Schema(description = "todo 완료 여부", nullable = false, example = "TRUE or FALSE",defaultValue = "FALSE" )
     private Boolean completed;
 
-    @Schema(description = "todo 파일 아이디 목록", nullable = true)
+    @Schema(description = "todo 첨부 파일", nullable = true)
     private List<FileInfo> files = new ArrayList<>();
 
-
-
     @Builder
-    public TodoSingleRes(Todo todo) {
-        this.id = todo.getId();
-        this.subject = todo.getSubject();
-        this.body = todo.getBody();
-        this.completed = todo.getCompleted()==Complete.FALSE ? Boolean.FALSE : Boolean.TRUE;
-        //this.files = todo.getFiles().stream().map(file -> file.getId()).collect(Collectors.toList());
-        this.files = todo.getFiles().stream().map(file -> FileInfo.builder().id(file.getId()).name(file.getFileName()).build()).collect(Collectors.toList());
+    public TodoSingleRes(Long id, String subject, String body, Boolean completed, List<FileInfo> files) {
+        this.id = id;
+        this.subject = subject;
+        this.body = body;
+        this.completed = completed;
+        this.files = files;
     }
 
     @Getter
+    @Schema(description = "todo 첨부 파일 정보", nullable = true)
     public static class FileInfo{
 
+        @Schema(description = "todo 파일 아이디", nullable = true)
         private Long id;
 
+        @Schema(description = "todo 파일 아이디명", nullable = true)
         private String name;
 
         @Builder

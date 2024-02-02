@@ -4,6 +4,7 @@ import com.guen.jwt.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -12,7 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @EnableMethodSecurity //method 기반 security 적용
@@ -45,8 +48,12 @@ public class SecurityConfig {
                 )
                 //jwt를 기반으로 한 필터를 적용
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
+
                 //@ControllerAdvice에서 예외를 처리하도 설정
-                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint))
+                .exceptionHandling(handler -> handler
+                        .defaultAuthenticationEntryPointFor(entryPoint, new AntPathRequestMatcher("/api/**"))
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND))
+                )
                 .build();
     }
 

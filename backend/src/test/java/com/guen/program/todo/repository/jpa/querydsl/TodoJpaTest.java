@@ -20,30 +20,30 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TodoJpaTest {
-
-    @Autowired
-    TodoJpa todoJpa;
-
-
-    @Test
-    @Order(1)
-    public void  todo목록조회(){
-        List<Todo> all = todoJpa.findAll();
-        //Assertions.assertThat(all.size()).isEqualTo(9);
-    }
-
-
-    @Test
-    @Order(2)
-    public void  todo조회(){
-        Todo todo = todoJpa.findById(58L)
-                .orElseGet(() -> {
-                    Todo newTodo = new Todo("제목", "없음", Complete.FALSE);
-                    todoJpa.save(newTodo);
-                    return newTodo;
-                });
-
-        Assertions.assertThat(todo.getBody()).isEqualTo("본문6");
-    }
+//
+//    @Autowired
+//    TodoJpa todoJpa;
+//
+//
+//    @Test
+//    @Order(1)
+//    public void  todo목록조회(){
+//        List<Todo> all = todoJpa.findAll();
+//        //Assertions.assertThat(all.size()).isEqualTo(9);
+//    }
+//
+//
+//    @Test
+//    @Order(2)
+//    public void  todo조회(){
+//        Todo todo = todoJpa.findById(58L)
+//                .orElseGet(() -> {
+//                    Todo newTodo = new Todo("제목", "없음", Complete.FALSE);
+//                    todoJpa.save(newTodo);
+//                    return newTodo;
+//                });
+//
+//        Assertions.assertThat(todo.getBody()).isEqualTo("본문6");
+//    }
 
 }

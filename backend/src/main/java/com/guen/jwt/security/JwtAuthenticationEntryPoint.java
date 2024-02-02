@@ -1,5 +1,6 @@
 package com.guen.jwt.security;
 
+import com.guen.program.todo.exception.PathVariableException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +19,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-        resolver.resolveException(request, response, null, (Exception) request.getAttribute("exception"));
-        //resolver.resolveException(request, response, null, authException);
+        try {
+            resolver.resolveException(request, response, null, (Exception) request.getAttribute("exception"));
+        }catch (Exception e){
+            request.setAttribute("exception", new PathVariableException("잘못되 접근"));
+            resolver.resolveException(request, response, null, (Exception) request.getAttribute("exception"));
+        }
     }
 }

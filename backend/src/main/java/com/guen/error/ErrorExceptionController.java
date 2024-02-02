@@ -2,10 +2,13 @@ package com.guen.error;
 
 
 import com.guen.jwt.exception.ExpiredRefreshJwtException;
+import com.guen.program.todo.exception.PathVariableException;
+import com.guen.program.todo.exception.TodoNotFindException;
 import com.guen.sign.Exception.NotValidIdOrPasswordException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,6 +47,10 @@ public class ErrorExceptionController {
         return buildError(accountNotFound);
     }*/
 
+
+    /*******************************************************************************
+     * SpringSecurity - GLOBAL 에러 핸들링
+     *******************************************************************************/
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -88,6 +95,14 @@ public class ErrorExceptionController {
         return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleTodoNotFindException(ConstraintViolationException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.ConstraintViolationException);
+    }
+
+
 
     /*******************************************************************************
      * SpringSecurity - JWT 토큰 관련 에러 핸들링
@@ -127,6 +142,27 @@ public class ErrorExceptionController {
         log.error(e.getMessage());
         return buildError(ErrorCode.ExpiredRefreshJwtException);
     }
+
+
+    /*******************************************************************************
+     * 사용자 에러 핸들링
+     *******************************************************************************/
+
+    @ExceptionHandler(TodoNotFindException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleTodoNotFindException(TodoNotFindException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.TodoNotFindException);
+    }
+
+    @ExceptionHandler(PathVariableException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleTodoNotFindException(PathVariableException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.PathVariableException);
+    }
+
+
 
 
     // TODO: 2018. 5. 12. 비밀번호 변경 컨트롤러 생성시 주석 해제할것 -yun
