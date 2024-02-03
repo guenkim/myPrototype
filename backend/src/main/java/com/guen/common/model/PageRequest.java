@@ -1,10 +1,14 @@
 package com.guen.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.Sort;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Schema(description = "페이지 정보")
@@ -23,7 +27,23 @@ public final class PageRequest {
     @Positive
     private int size=5;
 
-    //    private Sort.Direction direction;
+    @Schema(description = "페이지 정렬 정보", example = "sort=field1,asc&sort=field2,desc")
+    private String[] sortParams;
+
+    @JsonIgnore
+    private List<Sort.Order> sort;
+    public void setSort(String[] sortParams) {
+        //this.sort = sort;
+        if (sortParams != null && sortParams.length > 0) {
+            this.sort = new ArrayList<>();
+            for (int i = 0; i < sortParams.length; i++) {
+                String fieldName = sortParams[i].split(",")[0];
+                Sort.Direction direction  = Sort.Direction.fromString(sortParams[i].split(",")[1]);
+                this.sort.add(Sort.Order.by(fieldName).with(direction));
+            }
+        }
+    }
+
 
     public void setSubject(String subject) {
         this.subject = subject;
@@ -32,8 +52,6 @@ public final class PageRequest {
     public String getSubject() {
         return subject;
     }
-
-
 
     public void setPage(String page) {
         try {
@@ -47,7 +65,6 @@ public final class PageRequest {
         return page;
     }
 
-
     public void setSize(String size) {
         try {
             this.size = Integer.parseInt(size);
@@ -58,22 +75,11 @@ public final class PageRequest {
         }
     }
 
-
     public int getSize() {
         return size;
     }
 
-    //    public void setDirection(Sort.Direction direction) {
-//        this.direction = direction;
-//    }
-
-    //    public Sort.Direction getDirection() {
-//        return direction;
-//    }
-
-
     public org.springframework.data.domain.PageRequest of() {
-//        return org.springframework.data.domain.PageRequest.of(page - 1, size, direction, "createdAt");
-        return org.springframework.data.domain.PageRequest.of(page - 1, size);
+        return org.springframework.data.domain.PageRequest.of(page - 1, size ,Sort.by(sort));
     }
 }

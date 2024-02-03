@@ -50,10 +50,12 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
 
                 //@ControllerAdvice에서 예외를 처리하도 설정
-                .exceptionHandling(handler -> handler
-                        .defaultAuthenticationEntryPointFor(entryPoint, new AntPathRequestMatcher("/api/**"))
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND))
-                )
+//                .exceptionHandling(handler -> handler
+//                        .defaultAuthenticationEntryPointFor(entryPoint, new AntPathRequestMatcher("/**"))
+//                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND))
+//)
+                        //@ControllerAdvice에서 예외를 처리하도 설정
+                        .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint))
                 .build();
     }
 

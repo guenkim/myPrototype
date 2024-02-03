@@ -61,6 +61,9 @@ export default {
     let limit = 5;
     const currentPage = ref(1);
     const searchText = ref('');
+    const sortParam1 = ref('sort=subject,asc');
+    const sortParam2 = ref('sort=id,desc');
+    const sortArr = ref([]);
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
     });
@@ -74,7 +77,10 @@ export default {
 
     const getTodos = (page = currentPage.value) => {
       currentPage.value = page;
-      TodoService.getTodos(searchText.value, page, limit)
+      sortArr.value = [];
+      sortArr.value.push(sortParam1);
+      sortArr.value.push(sortParam2);
+      TodoService.getTodos(searchText.value, page, limit,sortArr)
           .then(
               (response) => {
                 console.log(response);
