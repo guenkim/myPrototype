@@ -1,11 +1,14 @@
 package com.guen.program.todo.model.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,19 +25,31 @@ public class TodoSingleRes {
     @Schema(description = "todo 내용", nullable = true, example = "내용 ...",defaultValue = "내용 ...")
     private String body;
 
-    @Schema(description = "todo 완료 여부", nullable = false, example = "TRUE or FALSE",defaultValue = "FALSE" )
+    @Schema(description = "todo 완료 여부", nullable = false, example = "FALSE",defaultValue = "FALSE" )
     private Boolean completed;
 
     @Schema(description = "todo 첨부 파일", nullable = true)
     private List<FileInfo> files = new ArrayList<>();
 
+    @Schema(description = "todo 등록일", nullable = false,example = "2021-01-01 00:00:00",defaultValue = "2021-01-01 00:00:00")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime regdt;
+
+    @Schema(description = "todo 수정일", nullable = false,example = "2021-01-01 00:00:00",defaultValue = "2021-01-01 00:00:00")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime moddt;
+
     @Builder
-    public TodoSingleRes(Long id, String subject, String body, Boolean completed, List<FileInfo> files) {
+    public TodoSingleRes(Long id, String subject, String body, Boolean completed, List<FileInfo> files, LocalDateTime regdt, LocalDateTime moddt) {
         this.id = id;
         this.subject = subject;
         this.body = body;
         this.completed = completed;
         this.files = files;
+        this.regdt = regdt;
+        this.moddt = moddt;
     }
 
     @Getter

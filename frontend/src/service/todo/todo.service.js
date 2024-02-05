@@ -2,11 +2,13 @@ import AxiosInst from "@/service/api";
 
 class TodoService {
     getTodos(searchText,page,limit,sortArr){
-        let url = '';
-        url = `todos?subject=${searchText}&page=${page}&size=${limit}`;
-        sortArr.value.forEach(sort => url += '&' +  sort.value);
-        console.log("url:"+url);
-        //return  AxiosInst.get(`todos?subject=${searchText}&page=${page}&size=${limit}`);
+        let url = `todos?subject=${searchText}&page=${page}&size=${limit}`;
+        if (sortArr.value.length > 0) {
+            const sortParameters = sortArr.value.map(sort => sort.value).join(',');
+            url += `&sort=${sortParameters}`;
+        }
+        console.log("url: " + url);
+
         return  AxiosInst.get(url);
     }
 

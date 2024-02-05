@@ -1,7 +1,7 @@
 package com.guen.sign.controller;
 
 
-import com.guen.common.model.ApiResponse;
+import com.guen.common.model.dto.ApiResponse;
 import com.guen.sign.dto.sign_in.request.SignInRequest;
 import com.guen.sign.dto.sign_up.request.SignUpRequest;
 import com.guen.sign.service.SignService;

@@ -1,4 +1,4 @@
-package com.guen.common.model;
+package com.guen.common.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,37 +13,38 @@ import java.util.List;
 
 @Schema(description = "페이지 정보")
 @Getter
-@Setter
 public final class PageRequest {
 
-    @Schema(description = "검색어", example = "검색어....",required = false)
+    @Schema(description = "검색어", example = "제목", required = false)
     private String subject;
 
-    @Schema(description = "요청페이지", example = "1" ,required = false)
+    @Schema(description = "요청페이지", example = "1", required = false)
     @Positive
-    private int page=1;
+    private int page = 1;
 
-    @Schema(description = "페이지당 아티클수", example = "10",required = false)
+    @Schema(description = "페이지당 아티클수", example = "10", required = false)
     @Positive
-    private int size=5;
+    private int size = 5;
 
-    @Schema(description = "페이지 정렬 정보", example = "sort=field1,asc&sort=field2,desc")
-    private String[] sortParams;
 
     @JsonIgnore
-    private List<Sort.Order> sort;
-    public void setSort(String[] sortParams) {
-        //this.sort = sort;
-        if (sortParams != null && sortParams.length > 0) {
-            this.sort = new ArrayList<>();
-            for (int i = 0; i < sortParams.length; i++) {
-                String fieldName = sortParams[i].split(",")[0];
-                Sort.Direction direction  = Sort.Direction.fromString(sortParams[i].split(",")[1]);
-                this.sort.add(Sort.Order.by(fieldName).with(direction));
+    private List<Sort.Order> sortOrder = new ArrayList<>();
+
+
+    @Schema(description = "페이지 정렬 정보", example = "id,asc,subject,desc")
+    private String sort;
+
+    public void setSort(String sort) {
+        this.sort = sort;
+        if (sort != null && !sort.isEmpty()) {
+            String[] sortParams = sort.split(",");
+            for (int i = 0; i < sortParams.length; i += 2) {
+                String fieldName = sortParams[i];
+                Sort.Direction direction = Sort.Direction.fromString(sortParams[i + 1]);
+                this.sortOrder.add(Sort.Order.by(fieldName).with(direction));
             }
         }
     }
-
 
     public void setSubject(String subject) {
         this.subject = subject;
@@ -80,6 +81,10 @@ public final class PageRequest {
     }
 
     public org.springframework.data.domain.PageRequest of() {
-        return org.springframework.data.domain.PageRequest.of(page - 1, size ,Sort.by(sort));
+        if (sortOrder.size() > 0) {
+            return org.springframework.data.domain.PageRequest.of(page - 1, size, Sort.by(sortOrder));
+        }else{
+            return org.springframework.data.domain.PageRequest.of(page - 1, size);
+        }
     }
 }

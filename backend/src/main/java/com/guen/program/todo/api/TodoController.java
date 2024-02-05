@@ -1,10 +1,9 @@
 package com.guen.program.todo.api;
 
-import com.guen.common.model.PageRequest;
-import com.guen.common.model.PageResponse;
+import com.guen.common.model.dto.PageRequest;
+import com.guen.common.model.dto.PageResponse;
 import com.guen.error.ErrorResponse;
 import com.guen.jwt.security.UserAuthorize;
-import com.guen.program.todo.exception.PathVariableException;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
@@ -21,9 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -34,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "Todo API")
 @Slf4j

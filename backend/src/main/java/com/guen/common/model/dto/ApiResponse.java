@@ -1,5 +1,7 @@
-package com.guen.common.model;
+package com.guen.common.model.dto;
 
+
+import com.guen.common.model.ApiStatus;
 
 public record ApiResponse(
         ApiStatus status,

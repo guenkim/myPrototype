@@ -61,8 +61,8 @@ export default {
     let limit = 5;
     const currentPage = ref(1);
     const searchText = ref('');
-    const sortParam1 = ref('sort=subject,asc');
-    const sortParam2 = ref('sort=id,desc');
+    const sortParam1 = ref('subject,asc');
+    const sortParam2 = ref('id,desc');
     const sortArr = ref([]);
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);

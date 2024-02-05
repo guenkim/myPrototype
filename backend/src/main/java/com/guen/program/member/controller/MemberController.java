@@ -1,7 +1,7 @@
 package com.guen.program.member.controller;
 
 
-import com.guen.common.model.ApiResponse;
+import com.guen.common.model.dto.ApiResponse;
 import com.guen.program.member.dto.request.MemberUpdateRequest;
 import com.guen.jwt.security.UserAuthorize;
 import com.guen.program.member.service.MemberService;

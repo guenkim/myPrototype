@@ -3,6 +3,7 @@ package com.guen.program.todo.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.guen.common.file.model.entity.Files;
+import com.guen.common.model.entity.BaseDate;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoRes;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-public class Todo {
+public class Todo extends BaseDate{
 
     private static final long serialVersionUID = -563329217866858622L;
 
@@ -82,6 +83,8 @@ public class Todo {
                 .subject(this.subject)
                 .body(this.body)
                 .completed(this.completed ==Complete.FALSE ? Boolean.FALSE : Boolean.TRUE)
+                .regdt(this.getRegdt())
+                .moddt(this.getModdt())
                 .build();
     }
 
@@ -93,6 +96,8 @@ public class Todo {
                 .subject(this.subject)
                 .body(this.body)
                 .completed(this.completed==Complete.FALSE ? Boolean.FALSE : Boolean.TRUE)
+                .regdt(this.getRegdt())
+                .moddt(this.getModdt())
                 .files(this.files.stream().map(file->TodoSingleRes.FileInfo.builder().name(file.getFileName()).id(file.getId()).build()).collect(Collectors.toList())).build();
     }
 

@@ -1,4 +1,4 @@
-package com.guen.common.model;
+package com.guen.common.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
