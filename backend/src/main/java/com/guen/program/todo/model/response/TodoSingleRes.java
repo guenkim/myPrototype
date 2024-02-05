@@ -31,14 +31,13 @@ public class TodoSingleRes {
     @Schema(description = "todo 첨부 파일", nullable = true)
     private List<FileInfo> files = new ArrayList<>();
 
-    @Schema(description = "todo 등록일", nullable = false,example = "2021-01-01 00:00:00",defaultValue = "2021-01-01 00:00:00")
+
+    @Schema(description = "todo 등록일", nullable = false,example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regdt;
 
-    @Schema(description = "todo 수정일", nullable = false,example = "2021-01-01 00:00:00",defaultValue = "2021-01-01 00:00:00")
+    @Schema(description = "todo 수정일", nullable = false,example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime moddt;
 
     @Builder

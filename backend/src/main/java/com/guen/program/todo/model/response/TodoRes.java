@@ -31,11 +31,11 @@ public class TodoRes {
     @Schema(description = "todo 완료 여부", nullable = false, example = "TRUE or FALSE",defaultValue = "FALSE" )
     private Boolean completed;
 
-    @Schema(description = "todo 등록일", nullable = false, example = "2021-01-01 00:00:00",defaultValue = "2021-01-01 00:00:00")
+    @Schema(description = "todo 등록일", nullable = false, example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regdt;
 
-    @Schema(description = "todo 수정일", nullable = false, example = "2021-01-01 00:00:00",defaultValue = "2021-01-01 00:00:00")
+    @Schema(description = "todo 수정일", nullable = false, example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime moddt;
 

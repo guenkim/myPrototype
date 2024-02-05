@@ -5,6 +5,7 @@ import com.guen.common.model.dto.ApiResponse;
 import com.guen.program.member.dto.request.MemberUpdateRequest;
 import com.guen.jwt.security.UserAuthorize;
 import com.guen.program.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Hidden
 @Tag(name = "로그인 후 사용할 수 있는 API")
 @RequiredArgsConstructor
 @UserAuthorize //권한에 따른 메소드 제한

@@ -3,6 +3,7 @@ package com.guen.common.file.api;
 import com.guen.common.file.exception.FileNotFoundException;
 import com.guen.common.file.service.FileStorageService;
 import com.guen.jwt.security.UserAuthorize;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -24,6 +25,7 @@ import com.guen.error.ErrorResponse;
 import java.io.IOException;
 
 
+@Hidden
 @Slf4j
 @RestController
 @RequestMapping("/api")
