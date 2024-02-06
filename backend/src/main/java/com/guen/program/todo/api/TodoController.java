@@ -10,6 +10,7 @@ import com.guen.jwt.security.UserAuthorize;
 import com.guen.program.todo.JsonView.TodoView;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
+import com.guen.program.todo.model.request.TestReq;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoSingleRes;
 import com.guen.program.todo.service.TodoService;
@@ -35,6 +36,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Tag(name = "Todo API")
@@ -55,7 +57,6 @@ public class TodoController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping
-    @JsonView(TodoView.User.class)
     public ResponseEntity getTodos(
             @ParameterObject @Valid final PageRequest pageRequest
     ){
@@ -93,7 +94,7 @@ public class TodoController {
             @RequestPart(value="todoReq", required = true) @Valid final TodoReq todoReq,
             @Parameter(description = "The files part of the request",required = false)
             @RequestPart(value = "files", required = false) final  List<MultipartFile> files
-    ) {
+    ){
         log.info("TodoController > create");
         Todo todo = todoService.save(todoReq,files);
         return ResponseEntity.noContent().build();
@@ -153,6 +154,13 @@ public class TodoController {
     ) {
         log.info("TodoController > updateComplete");
         todoService.updateCompleteById(todoId,completed);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity test(
+            @RequestBody @Valid  TestReq testReq
+    ){
         return ResponseEntity.noContent().build();
     }
 

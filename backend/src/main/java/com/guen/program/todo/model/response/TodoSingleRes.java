@@ -1,6 +1,8 @@
 package com.guen.program.todo.model.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,6 +21,7 @@ public class TodoSingleRes {
 
     @Schema(description = "todo 아이디", nullable = false, example = "todo 아이디" ,defaultValue = "todo 아이디")
     private Long id;
+
     @Schema(description = "todo 제목", nullable = false, example = "제목 ..." ,defaultValue = "제목...")
     private String subject;
 
@@ -30,7 +33,6 @@ public class TodoSingleRes {
 
     @Schema(description = "todo 첨부 파일", nullable = true)
     private List<FileInfo> files = new ArrayList<>();
-
 
     @Schema(description = "todo 등록일", nullable = false,example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -68,3 +70,5 @@ public class TodoSingleRes {
         }
     }
 }
+
+

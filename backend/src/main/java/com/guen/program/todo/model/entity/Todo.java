@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.guen.common.file.model.entity.Files;
 import com.guen.common.model.entity.BaseDate;
+import com.guen.converter.EncryptionConverter;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoRes;
@@ -45,7 +46,6 @@ public class Todo extends BaseDate{
     @OneToMany(mappedBy = "todo" ,cascade = CascadeType.PERSIST ,orphanRemoval = true ,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Files> files = new ArrayList<>();
-
 
     @Builder
     public Todo(Long id, String subject, String body, Complete completed,List<Files> files) {
