@@ -1,16 +1,11 @@
 package com.guen.program.todo.api;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.guen.common.model.dto.PageRequest;
 import com.guen.common.model.dto.PageResponse;
 import com.guen.error.ErrorResponse;
 import com.guen.jwt.security.UserAuthorize;
-import com.guen.program.todo.JsonView.TodoView;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
-import com.guen.program.todo.model.request.TestReq;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoSingleRes;
 import com.guen.program.todo.service.TodoService;
@@ -31,12 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Tag(name = "Todo API")
@@ -156,12 +149,4 @@ public class TodoController {
         todoService.updateCompleteById(todoId,completed);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/test")
-    public ResponseEntity test(
-            @RequestBody @Valid  TestReq testReq
-    ){
-        return ResponseEntity.noContent().build();
-    }
-
 }
