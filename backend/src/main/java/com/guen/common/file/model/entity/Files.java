@@ -10,7 +10,6 @@ import lombok.*;
 @Table(name="files")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 public class Files {
     @Id
     @GeneratedValue

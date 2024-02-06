@@ -12,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class TodoJpaExtendImpl extends QuerydslRepositorySupport  implements Tod
 
         long total = totalCount;
         List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
+
         long page = pageable.getPageNumber();
         long size = pageable.getPageSize();
 

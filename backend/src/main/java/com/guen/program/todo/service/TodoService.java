@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,7 +92,9 @@ public class TodoService {
         long totalCount = todoPage.getTotalElements(); //전체항목수
         int size = todoPage.getSize(); //페이지당 항목수
         List<Todo> todos = todoPage.getContent(); //데이터 목록
+
         List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
+
         int page = todoPage.getNumber(); //현재 페이지
         return PageResponse.builder()
                 .page(page)
@@ -109,7 +112,7 @@ public class TodoService {
 
     @Transactional
     public Todo save(final TodoReq todoReq, final List<MultipartFile> files){
-        Todo newTodo = new Todo(todoReq.getSubject(),todoReq.getBody(),todoReq.getCompleted());
+        Todo newTodo = todoReq.toEntity();
         List<Files> filesList = new ArrayList<>();
         if(files!=null) {
             filesList = files.stream().map(file -> fileStorageService.storeFile(file))

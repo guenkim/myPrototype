@@ -46,14 +46,6 @@ public final class PageRequest {
         }
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
     public void setPage(String page) {
         try {
             this.page = Integer.parseInt(page) <= 0 ? 1 : Integer.parseInt(page);
@@ -61,11 +53,6 @@ public final class PageRequest {
             this.page = 1;
         }
     }
-
-    public int getPage() {
-        return page;
-    }
-
     public void setSize(String size) {
         try {
             this.size = Integer.parseInt(size);
@@ -74,10 +61,6 @@ public final class PageRequest {
             int MAX_SIZE = 50;
             this.size = DEFAULT_SIZE;
         }
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public org.springframework.data.domain.PageRequest of() {

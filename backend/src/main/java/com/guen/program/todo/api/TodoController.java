@@ -1,5 +1,7 @@
 package com.guen.program.todo.api;
 
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.guen.common.model.dto.PageRequest;
 import com.guen.common.model.dto.PageResponse;
 import com.guen.error.ErrorResponse;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +58,22 @@ public class TodoController {
     ){
         log.info("TodoController > getTodos");
         PageResponse response = todoService.search(pageRequest.getSubject(), pageRequest.of());
-        return ResponseEntity.ok().body(response);
+
+        /***************************************************************
+         *  Json Filter 적용
+         ***************************************************************/
+        MappingJacksonValue wrapper = new MappingJacksonValue(response);
+        wrapper.setFilters(
+                new SimpleFilterProvider()
+                        .addFilter("TodoRes",
+                                // 해당 필드 허용
+                                SimpleBeanPropertyFilter.filterOutAllExcept("id","subject","body","completed","regdt","moddt")
+                                //필드 제외
+                                //SimpleBeanPropertyFilter.serializeAllExcept("regdt","moddt")
+                        )
+        );
+
+        return ResponseEntity.ok().body(wrapper);
 
     }
 

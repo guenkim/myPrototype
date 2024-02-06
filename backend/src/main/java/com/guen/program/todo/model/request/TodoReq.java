@@ -1,6 +1,7 @@
 package com.guen.program.todo.model.request;
 
 
+import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -25,16 +26,12 @@ public class TodoReq {
     @Schema(description = "todo 완료 여부", nullable = false, example = "FALSE",defaultValue = "FALSE" )
     private Complete completed = Complete.FALSE;
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public void setCompleted(Complete completed) {
-        this.completed = completed;
+    public Todo toEntity(){
+        return Todo.builder()
+                .subject(subject)
+                .body(body)
+                .completed(completed)
+                .build();
     }
 
 }

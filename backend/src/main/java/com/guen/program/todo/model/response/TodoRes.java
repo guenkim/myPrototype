@@ -1,5 +1,6 @@
 package com.guen.program.todo.model.response;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Schema(description = "todo 정보")
 @Getter
+@JsonFilter("TodoRes")
 public class TodoRes {
 
     @Schema(description = "todo 아이디", nullable = false, example = "todo 아이디" ,defaultValue = "todo 아이디")
