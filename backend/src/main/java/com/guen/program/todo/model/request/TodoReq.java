@@ -12,8 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
 @Schema(description = "todo 정보")
+@Getter
 public class TodoReq {
 
     @Schema(description = "todo 제목", nullable = false, example = "제목" ,defaultValue = "제목")

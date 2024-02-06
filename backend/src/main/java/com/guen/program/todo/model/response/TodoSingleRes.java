@@ -19,26 +19,26 @@ import java.util.stream.Collectors;
 @Getter
 public class TodoSingleRes {
 
-    @Schema(description = "todo 아이디", nullable = false, example = "todo 아이디" ,defaultValue = "todo 아이디")
+    @Schema(description = "todo 아이디", example = "todo 아이디")
     private Long id;
 
-    @Schema(description = "todo 제목", nullable = false, example = "제목 ..." ,defaultValue = "제목...")
+    @Schema(description = "todo 제목", example = "제목")
     private String subject;
 
-    @Schema(description = "todo 내용", nullable = true, example = "내용 ...",defaultValue = "내용 ...")
+    @Schema(description = "todo 내용",  example = "내용")
     private String body;
 
-    @Schema(description = "todo 완료 여부", nullable = false, example = "FALSE",defaultValue = "FALSE" )
+    @Schema(description = "todo 완료 여부", example = "FALSE")
     private Boolean completed;
 
-    @Schema(description = "todo 첨부 파일", nullable = true)
+    @Schema(description = "todo 첨부 파일")
     private List<FileInfo> files = new ArrayList<>();
 
-    @Schema(description = "todo 등록일", nullable = false,example = "2021-01-01 00:00:00", type = "string")
+    @Schema(description = "todo 등록일", example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regdt;
 
-    @Schema(description = "todo 수정일", nullable = false,example = "2021-01-01 00:00:00", type = "string")
+    @Schema(description = "todo 수정일", example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime moddt;
 

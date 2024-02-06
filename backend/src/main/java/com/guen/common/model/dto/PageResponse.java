@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Schema(description = "페이지 정보")
+@Getter
 public class PageResponse<T> {
 
     @Schema(description = "페이지")
