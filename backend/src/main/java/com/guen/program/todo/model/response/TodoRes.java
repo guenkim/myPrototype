@@ -2,6 +2,8 @@ package com.guen.program.todo.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.guen.program.todo.JsonView.TodoView;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -19,26 +21,32 @@ import java.util.stream.Collectors;
 
 @Schema(description = "todo 정보")
 @Getter
-@JsonFilter("TodoRes")
 public class TodoRes {
 
     @Schema(description = "todo 아이디", nullable = false, example = "todo 아이디" ,defaultValue = "todo 아이디")
+    @JsonView(TodoView.User.class)
     private Long id;
+
     @Schema(description = "todo 제목", nullable = false, example = "제목 ..." ,defaultValue = "제목...")
+    @JsonView(TodoView.User.class)
     private String subject;
 
     @Schema(description = "todo 내용", nullable = true, example = "내용 ...",defaultValue = "내용 ...")
+    @JsonView(TodoView.User.class)
     private String body;
 
     @Schema(description = "todo 완료 여부", nullable = false, example = "TRUE or FALSE",defaultValue = "FALSE" )
+    @JsonView(TodoView.User.class)
     private Boolean completed;
 
     @Schema(description = "todo 등록일", nullable = false, example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonView(TodoView.Admin.class)
     private LocalDateTime regdt;
 
     @Schema(description = "todo 수정일", nullable = false, example = "2021-01-01 00:00:00", type = "string")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonView(TodoView.Admin.class)
     private LocalDateTime moddt;
 
     @Builder

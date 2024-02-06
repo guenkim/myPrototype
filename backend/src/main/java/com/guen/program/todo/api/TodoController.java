@@ -1,11 +1,13 @@
 package com.guen.program.todo.api;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.guen.common.model.dto.PageRequest;
 import com.guen.common.model.dto.PageResponse;
 import com.guen.error.ErrorResponse;
 import com.guen.jwt.security.UserAuthorize;
+import com.guen.program.todo.JsonView.TodoView;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
@@ -53,27 +55,14 @@ public class TodoController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping
+    @JsonView(TodoView.User.class)
     public ResponseEntity getTodos(
             @ParameterObject @Valid final PageRequest pageRequest
     ){
         log.info("TodoController > getTodos");
         PageResponse response = todoService.search(pageRequest.getSubject(), pageRequest.of());
 
-        /***************************************************************
-         *  Json Filter 적용
-         ***************************************************************/
-        MappingJacksonValue wrapper = new MappingJacksonValue(response);
-        wrapper.setFilters(
-                new SimpleFilterProvider()
-                        .addFilter("TodoRes",
-                                // 해당 필드 허용
-                                SimpleBeanPropertyFilter.filterOutAllExcept("id","subject","body","completed","regdt","moddt")
-                                //필드 제외
-                                //SimpleBeanPropertyFilter.serializeAllExcept("regdt","moddt")
-                        )
-        );
-
-        return ResponseEntity.ok().body(wrapper);
+        return ResponseEntity.ok().body(response);
 
     }
 
