@@ -2,6 +2,7 @@ package com.guen.common.file.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.guen.common.model.entity.BaseDate;
 import com.guen.program.todo.model.entity.Todo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,12 +11,12 @@ import lombok.*;
 @Table(name="files")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Files {
+public class Files extends BaseDate {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name="filename", nullable = false)
+    @Column(name="filename", nullable = false, length = 100)
     private String fileName;
 
 

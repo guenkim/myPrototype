@@ -2,19 +2,14 @@ package com.guen.program.todo.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.guen.common.file.model.entity.Files;
-import com.guen.common.model.entity.BaseDate;
-import com.guen.converter.EncryptionConverter;
+import com.guen.common.model.entity.BaseUserAndDate;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoRes;
 import com.guen.program.todo.model.response.TodoSingleRes;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.http.converter.json.MappingJacksonValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +19,7 @@ import java.util.stream.Collectors;
 @Table(name="todo")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Todo extends BaseDate{
+public class Todo extends BaseUserAndDate {
 
     private static final long serialVersionUID = -563329217866858622L;
 
