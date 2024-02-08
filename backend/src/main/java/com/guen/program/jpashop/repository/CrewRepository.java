@@ -1,7 +1,7 @@
 package com.guen.program.jpashop.repository;
 
 
-import com.guen.program.jpashop.domain.Crew;
+import com.guen.program.jpashop.model.entity.Crew;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,12 +24,12 @@ public class CrewRepository {
     }
 
     public List<Crew> findAll() {
-        return em.createQuery("select m from Member m", Crew.class)
+        return em.createQuery("select c from Crew c", Crew.class)
                 .getResultList();
     }
 
     public List<Crew> findByName(String name) {
-        return em.createQuery("select m from Member m where m.name = :name", Crew.class)
+        return em.createQuery("select c from Crew c where c.name = :name", Crew.class)
                 .setParameter("name", name)
                 .getResultList();
     }

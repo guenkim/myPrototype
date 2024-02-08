@@ -1,7 +1,7 @@
 package com.guen.program.jpashop.service;
 
 
-import com.guen.program.jpashop.domain.Crew;
+import com.guen.program.jpashop.model.entity.Crew;
 import com.guen.program.jpashop.repository.CrewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.guen.program.jpashop.service;
 
 
-import com.guen.program.jpashop.domain.item.Item;
+import com.guen.program.jpashop.model.entity.item.Item;
 import com.guen.program.jpashop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

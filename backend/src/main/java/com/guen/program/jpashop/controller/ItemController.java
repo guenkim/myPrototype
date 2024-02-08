@@ -1,33 +1,32 @@
 package com.guen.program.jpashop.controller;
 
 
-import com.guen.program.jpashop.domain.item.Book;
-import com.guen.program.jpashop.domain.item.Item;
+import com.guen.jwt.security.UserAuthorize;
+import com.guen.program.jpashop.model.dto.BookForm;
+import com.guen.program.jpashop.model.entity.item.Book;
+import com.guen.program.jpashop.model.entity.item.Item;
 import com.guen.program.jpashop.service.ItemService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@Tag(name = "Item API")
+@Slf4j
+@RestController
+@RequestMapping("/api")
+@UserAuthorize
 @RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/items/new")
-    public String createForm(Model model) {
-        model.addAttribute("form", new BookForm());
-        return "items/createItemForm";
-    }
-
     @PostMapping("/items/new")
-    public String create(BookForm form) {
+    public ResponseEntity create(@RequestBody final BookForm form) {
 
         Book book = new Book();
         book.setName(form.getName());
@@ -37,18 +36,17 @@ public class ItemController {
         book.setIsbn(form.getIsbn());
 
         itemService.saveItem(book);
-        return "redirect:/";
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/items")
-    public String list(Model model) {
+    public ResponseEntity list() {
         List<Item> items = itemService.findItems();
-        model.addAttribute("items", items);
-        return "items/itemList";
+        return ResponseEntity.ok().body(items);
     }
 
     @GetMapping("items/{itemId}/edit")
-    public String updateItemForm(@PathVariable("itemId") Long itemId, Model model) {
+    public ResponseEntity updateItemForm(@PathVariable("itemId") final Long itemId) {
         Book item = (Book) itemService.findOne(itemId);
 
         BookForm form = new BookForm();
@@ -58,17 +56,13 @@ public class ItemController {
         form.setStockQuantity(item.getStockQuantity());
         form.setAuthor(item.getAuthor());
         form.setIsbn(item.getIsbn());
-
-        model.addAttribute("form", form);
-        return "items/updateItemForm";
+        return ResponseEntity.ok().body(form);
     }
 
     @PostMapping("items/{itemId}/edit")
-    public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form) {
-
+    public ResponseEntity updateItem(@PathVariable final Long itemId, @RequestBody final BookForm form) {
         itemService.updateItem(itemId, form.getName(), form.getPrice(), form.getStockQuantity());
-
-        return "redirect:/items";
+        return ResponseEntity.noContent().build();
     }
 }
 

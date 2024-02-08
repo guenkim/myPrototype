@@ -1,7 +1,7 @@
-package com.guen.program.jpashop.domain.item;
+package com.guen.program.jpashop.model.entity.item;
 
-import com.guen.program.jpashop.domain.Category;
 import com.guen.program.jpashop.exception.NotEnoughStockException;
+import com.guen.program.jpashop.model.entity.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

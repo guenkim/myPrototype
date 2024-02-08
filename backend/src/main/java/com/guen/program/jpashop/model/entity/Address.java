@@ -1,4 +1,4 @@
-package com.guen.program.jpashop.domain;
+package com.guen.program.jpashop.model.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

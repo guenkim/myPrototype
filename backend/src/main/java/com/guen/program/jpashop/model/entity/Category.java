@@ -1,6 +1,6 @@
-package com.guen.program.jpashop.domain;
+package com.guen.program.jpashop.model.entity;
 
-import com.guen.program.jpashop.domain.item.Item;
+import com.guen.program.jpashop.model.entity.item.Item;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

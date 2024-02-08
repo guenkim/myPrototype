@@ -1,4 +1,4 @@
-package com.guen.program.jpashop.domain;
+package com.guen.program.jpashop.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

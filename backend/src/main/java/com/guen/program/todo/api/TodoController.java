@@ -10,6 +10,7 @@ import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoSingleRes;
 import com.guen.program.todo.service.TodoService;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -39,6 +40,7 @@ import java.util.List;
 @UserAuthorize
 @RequiredArgsConstructor
 @Validated
+@Hidden
 public class TodoController {
 
     private final TodoService todoService;

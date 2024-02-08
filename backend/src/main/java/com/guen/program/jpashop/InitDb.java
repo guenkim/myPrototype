@@ -1,8 +1,9 @@
 package com.guen.program.jpashop;
 
 
-import com.guen.program.jpashop.domain.*;
-import com.guen.program.jpashop.domain.item.Book;
+
+import com.guen.program.jpashop.model.entity.*;
+import com.guen.program.jpashop.model.entity.item.Book;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

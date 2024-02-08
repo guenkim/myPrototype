@@ -1,4 +1,4 @@
-package com.guen.program.jpashop.domain.item;
+package com.guen.program.jpashop.model.entity.item;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

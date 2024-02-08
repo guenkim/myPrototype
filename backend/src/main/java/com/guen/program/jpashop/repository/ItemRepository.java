@@ -1,6 +1,6 @@
 package com.guen.program.jpashop.repository;
 
-import com.guen.program.jpashop.domain.item.Item;
+import com.guen.program.jpashop.model.entity.item.Item;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

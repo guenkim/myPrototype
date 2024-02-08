@@ -1,8 +1,8 @@
 package com.guen.program.jpashop.service;
 
 
-import com.guen.program.jpashop.domain.*;
-import com.guen.program.jpashop.domain.item.Item;
+import com.guen.program.jpashop.model.entity.*;
+import com.guen.program.jpashop.model.entity.item.Item;
 import com.guen.program.jpashop.repository.ItemRepository;
 import com.guen.program.jpashop.repository.CrewRepository;
 import com.guen.program.jpashop.repository.OrderRepository;
@@ -10,6 +10,7 @@ import com.guen.program.jpashop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.guen.program.jpashop.model.entity.Order;
 
 import java.util.List;
 

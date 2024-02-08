@@ -1,12 +1,12 @@
 package com.guen.program.jpashop.repository;
 
 
-import com.guen.program.jpashop.domain.Order;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import com.guen.program.jpashop.model.entity.Order;
 
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class OrderRepository {
 
     public List<Order> findAllByString(OrderSearch orderSearch) {
 
-            String jpql = "select o from Order o join o.member m";
+            String jpql = "select o from Order o join o.crew m";
             boolean isFirstCondition = true;
 
         //주문 상태 검색
