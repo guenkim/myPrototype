@@ -1,7 +1,7 @@
-package com.guen.program.shop;
+package com.guen.program.apitest;
 
 import com.guen.jwt.security.UserAuthorize;
-import com.guen.program.shop.model.dto.TestReq;
+import com.guen.program.apitest.model.dto.TestReq;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

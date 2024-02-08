@@ -66,13 +66,6 @@ public class ErrorExceptionController {
         return buildFieldErrors(ErrorCode.INPUT_VALUE_INVALID, fieldErrors);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        log.error(e.getMessage());
-        return buildError(ErrorCode.INPUT_VALUE_INVALID);
-    }
-
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -88,12 +81,6 @@ public class ErrorExceptionController {
         return buildError(ErrorCode.NotValidIdOrPasswordException);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ErrorResponse handleInternalServerException(Exception e) {
-        log.error(e.getMessage());
-        return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
-    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -101,6 +88,20 @@ public class ErrorExceptionController {
         log.error(e.getMessage());
         return buildError(ErrorCode.ConstraintViolationException);
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse handleInternalServerException(Exception e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 

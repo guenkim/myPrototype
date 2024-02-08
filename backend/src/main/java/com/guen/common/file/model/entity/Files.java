@@ -21,6 +21,7 @@ public class Files extends BaseDate {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "todo_id", referencedColumnName = "id")
     @JsonBackReference
     private Todo todo;
 

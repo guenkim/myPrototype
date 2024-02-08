@@ -18,6 +18,11 @@ import java.util.UUID;
 @Getter
 @Entity
 public class Member {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+
     @Column(nullable = false, scale = 20, unique = true)
     private String account;
     @Column(nullable = false)
@@ -28,9 +33,6 @@ public class Member {
     private MemberType type;
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
 
     public static Member from(SignUpRequest request, PasswordEncoder encoder) {
         return Member.builder()

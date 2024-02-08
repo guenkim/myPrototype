@@ -11,14 +11,15 @@ import com.guen.program.todo.model.response.TodoSingleRes;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name="todo")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name="todo")
 public class Todo extends BaseUserAndDate {
 
     private static final long serialVersionUID = -563329217866858622L;
