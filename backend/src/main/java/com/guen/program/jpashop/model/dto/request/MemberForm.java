@@ -1,4 +1,4 @@
-package com.guen.program.jpashop.model.dto;
+package com.guen.program.jpashop.model.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

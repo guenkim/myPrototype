@@ -2,7 +2,7 @@ package com.guen.program.jpashop.controller;
 
 
 import com.guen.jwt.security.UserAuthorize;
-import com.guen.program.jpashop.model.dto.BookForm;
+import com.guen.program.jpashop.model.dto.request.BookForm;
 import com.guen.program.jpashop.model.entity.item.Book;
 import com.guen.program.jpashop.model.entity.item.Item;
 import com.guen.program.jpashop.service.ItemService;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

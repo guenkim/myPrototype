@@ -1,6 +1,7 @@
 package com.guen.program.jpashop.service;
 
 
+import com.guen.program.jpashop.model.dto.response.OrderResponse;
 import com.guen.program.jpashop.model.entity.*;
 import com.guen.program.jpashop.model.entity.item.Item;
 import com.guen.program.jpashop.repository.ItemRepository;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.guen.program.jpashop.model.entity.Order;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,7 +65,26 @@ public class OrderService {
     }
 
     //검색
-    public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderRepository.findAllByString(orderSearch);
+    public List<OrderResponse> findOrders(OrderSearch orderSearch) {
+        List<OrderResponse> responses = new ArrayList<>();
+        orderRepository.findAllByString(orderSearch).ifPresent(
+                orders -> orders.forEach(order -> {
+                    OrderResponse.Crew crew = new OrderResponse.Crew(order.getCrew().getName(), order.getCrew().getAddress());
+                    OrderResponse.Delivery delivery = new OrderResponse.Delivery(order.getDelivery().getId(), order.getDelivery().getAddress(), order.getDelivery().getStatus());
+
+                    List<OrderResponse.OrderItem> orderItems = order.getOrderItems().stream().map(orderItem ->
+                            new OrderResponse.OrderItem(
+                                    orderItem.getId(),
+                                    new OrderResponse.OrderItem.Item(orderItem.getItem().getId(), orderItem.getItem().getName(), orderItem.getItem().getPrice(), orderItem.getItem().getStockQuantity()),
+                                    orderItem.getOrderPrice(),
+                                    orderItem.getCount())
+                    ).collect(Collectors.toList());
+
+                    OrderResponse  orderResponse = new OrderResponse(order.getId(),crew,order.getOrderDate(), order.getStatus(),delivery,orderItems);
+                    responses.add(orderResponse);
+                })
+        );
+
+        return responses;
     }
 }

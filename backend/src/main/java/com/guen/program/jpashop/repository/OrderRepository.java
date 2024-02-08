@@ -11,6 +11,7 @@ import com.guen.program.jpashop.model.entity.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -30,7 +31,7 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-    public List<Order> findAllByString(OrderSearch orderSearch) {
+    public Optional<List<Order>> findAllByString(OrderSearch orderSearch) {
 
             String jpql = "select o from Order o join o.crew m";
             boolean isFirstCondition = true;
@@ -67,7 +68,7 @@ public class OrderRepository {
             query = query.setParameter("name", orderSearch.getMemberName());
         }
 
-        return query.getResultList();
+        return Optional.ofNullable(query.getResultList());
     }
 
     /**

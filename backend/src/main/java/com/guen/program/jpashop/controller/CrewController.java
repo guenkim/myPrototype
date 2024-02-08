@@ -2,7 +2,7 @@ package com.guen.program.jpashop.controller;
 
 
 import com.guen.jwt.security.UserAuthorize;
-import com.guen.program.jpashop.model.dto.MemberForm;
+import com.guen.program.jpashop.model.dto.request.MemberForm;
 import com.guen.program.jpashop.model.entity.Address;
 import com.guen.program.jpashop.model.entity.Crew;
 import com.guen.program.jpashop.service.CrewService;
@@ -11,8 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

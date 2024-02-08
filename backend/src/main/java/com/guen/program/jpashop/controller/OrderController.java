@@ -1,6 +1,7 @@
 package com.guen.program.jpashop.controller;
 
 import com.guen.jwt.security.UserAuthorize;
+import com.guen.program.jpashop.model.dto.response.OrderResponse;
 import com.guen.program.jpashop.model.entity.Crew;
 import com.guen.program.jpashop.model.entity.Order;
 import com.guen.program.jpashop.model.entity.item.Item;
@@ -43,7 +44,7 @@ public class OrderController {
 
     @GetMapping("/orders")
     public ResponseEntity orderList(@ParameterObject final OrderSearch orderSearch) {
-        List<Order> orders = orderService.findOrders(orderSearch);
+        List<OrderResponse> orders = orderService.findOrders(orderSearch);
         return ResponseEntity.ok().body(orders);
     }
 

@@ -1,4 +1,4 @@
-package com.guen.program.jpashop.model.dto;
+package com.guen.program.jpashop.model.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
