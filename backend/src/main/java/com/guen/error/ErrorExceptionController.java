@@ -2,6 +2,7 @@ package com.guen.error;
 
 
 import com.guen.jwt.exception.ExpiredRefreshJwtException;
+import com.guen.program.jpashop.exception.NotEnoughStockException;
 import com.guen.program.todo.exception.PathVariableException;
 import com.guen.program.todo.exception.TodoNotFindException;
 import com.guen.sign.Exception.NotValidIdOrPasswordException;
@@ -102,8 +103,12 @@ public class ErrorExceptionController {
         return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
-
-
+    @ExceptionHandler(NotEnoughStockException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorResponse handleNotEnoughStockException(NotEnoughStockException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
 
     /*******************************************************************************
      * SpringSecurity - JWT 토큰 관련 에러 핸들링

@@ -20,7 +20,8 @@ public enum ErrorCode {
     NotValidIdOrPasswordException,
     TodoNotFindException,
     ConstraintViolationException,
-    PathVariableException
+    PathVariableException,
+    NotEnoughStockException
     ;
 
     private String code;
@@ -152,6 +153,16 @@ public enum ErrorCode {
         @NotBlank
         private int pathVariableExceptionErrStts;
 
+        @Value("${error.NotEnoughStock.code}")
+        @NotBlank
+        private String notEnoughStockErrCd;
+        @Value("${error.NotEnoughStock.message}")
+        @NotBlank
+        private String notEnoughStockErrMsg;
+        @Value("${error.NotEnoughStock.status}")
+        @NotBlank
+        private int notEnoughStockErrStts;
+
 
 
 
@@ -159,6 +170,7 @@ public enum ErrorCode {
             ErrorCode.INPUT_VALUE_INVALID.initialize(invalidInputErrCd,invalidInputErrMsg,invalidInputErrStts);
             ErrorCode.NotValidIdOrPasswordException.initialize(notValidIdOrPasswordErrCd,notValidIdOrPasswordErrMsg,notValidIdOrPasswordErrStts);
             ErrorCode.INTERNAL_SERVER_ERROR.initialize(serverErrCd,serverErrMsg,serverErrStts);
+            ErrorCode.NotEnoughStockException.initialize(notEnoughStockErrCd,notEnoughStockErrMsg,notEnoughStockErrStts);
 
             ErrorCode.AccessDenied.initialize(accessDeniedErrCd,accessDeniedErrMsg,accessDeniedErrStts);
             ErrorCode.Signature.initialize(signatureErrCd,signatureErrMsg,signatureErrStts);
