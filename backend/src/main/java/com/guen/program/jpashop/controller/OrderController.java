@@ -1,6 +1,7 @@
 package com.guen.program.jpashop.controller;
 
 import com.guen.jwt.security.UserAuthorize;
+import com.guen.program.jpashop.model.dto.request.OrderDto;
 import com.guen.program.jpashop.model.dto.response.OrderResponse;
 import com.guen.program.jpashop.model.entity.Crew;
 import com.guen.program.jpashop.model.entity.Order;
@@ -34,11 +35,14 @@ public class OrderController {
     private final ItemService itemService;
 
     @PostMapping("/order")
-    public ResponseEntity order(@RequestParam("memberId") final Long memberId,
-                                @RequestParam("itemId") final Long itemId,
-                                @RequestParam("count") final int count) {
+//    public ResponseEntity order(@RequestParam("memberId") final Long memberId,
+//                                @RequestParam("itemId") final Long itemId,
+//                                @RequestParam("count") final int count)
 
-        orderService.order(memberId, itemId, count);
+    public ResponseEntity order(@RequestBody final OrderDto orderDto)
+    {
+
+        orderService.order(orderDto);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,6 +1,7 @@
 package com.guen.program.jpashop.service;
 
 
+import com.guen.program.jpashop.model.dto.request.OrderDto;
 import com.guen.program.jpashop.model.dto.response.OrderResponse;
 import com.guen.program.jpashop.model.entity.*;
 import com.guen.program.jpashop.model.entity.item.Item;
@@ -47,6 +48,33 @@ public class OrderService {
         //주문 생성
         Order order = Order.createOrder(crew, delivery, orderItem);
 
+        //주문 저장
+        orderRepository.save(order);
+
+        return order.getId();
+    }
+    @Transactional
+    public Long order(final OrderDto orderDto) {
+
+        //엔티티 조회
+        Crew crew = crewRepository.findOne(orderDto.getMemberId());
+        //배송정보 생성
+        Delivery delivery = new Delivery();
+        delivery.setAddress(crew.getAddress());
+        delivery.setStatus(DeliveryStatus.READY);
+        List<OrderItem> orderItems = new ArrayList<>();
+        orderDto.getItemList().stream().forEach((it)->{
+            Item item = itemRepository.findOne(it.getItemId());
+            //주문상품 생성
+            OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), it.getCount());
+            orderItems.add(orderItem);
+        });
+
+        OrderItem[] orderItemsArray = new OrderItem[orderItems.size()];
+        orderItemsArray = orderItems.toArray(orderItemsArray);
+
+        //주문 생성
+        Order order = Order.createOrder(crew, delivery, orderItemsArray);
         //주문 저장
         orderRepository.save(order);
 
