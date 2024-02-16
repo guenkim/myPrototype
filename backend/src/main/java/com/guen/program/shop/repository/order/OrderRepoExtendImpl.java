@@ -1,4 +1,4 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.order;
 
 import com.guen.program.shop.model.dto.request.ReqOrderSearchDto;
 import com.guen.program.shop.model.entity.Order;
@@ -12,11 +12,9 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class OrderRepoExtendImpl extends QuerydslRepositorySupport implements OrderRepoExtend {
 

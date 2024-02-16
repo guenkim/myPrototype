@@ -1,7 +1,6 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.crew;
 
 import com.guen.program.shop.model.entity.Crew;
-import com.guen.program.todo.model.entity.Todo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;

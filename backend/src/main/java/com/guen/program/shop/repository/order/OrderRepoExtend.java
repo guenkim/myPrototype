@@ -1,4 +1,4 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.order;
 
 import com.guen.program.shop.model.dto.request.ReqOrderSearchDto;
 import com.guen.program.shop.model.entity.Order;

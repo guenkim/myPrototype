@@ -1,23 +1,24 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.delivery;
 
-import com.guen.program.shop.model.entity.OrderItem;
+import com.guen.program.shop.model.entity.Delivery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-public class OrderItemRepoExtendImpl extends QuerydslRepositorySupport  implements OrderItemRepoExtend {
+public class DeliveryRepoExtendImpl extends QuerydslRepositorySupport implements DeliveryRepoExtend{
 
     private JPAQueryFactory queryFactory;
 
-    public OrderItemRepoExtendImpl(){
-        super(OrderItem.class);
+    public DeliveryRepoExtendImpl() {
+        super(Delivery.class);
     }
 
-    @Override
     @Autowired
+    @Override
     public void setEntityManager(EntityManager em){
         super.setEntityManager(em);
         queryFactory = new JPAQueryFactory(em);
     }
+
 }

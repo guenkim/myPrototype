@@ -1,4 +1,4 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.orderitem;
 
 import com.guen.program.shop.model.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;

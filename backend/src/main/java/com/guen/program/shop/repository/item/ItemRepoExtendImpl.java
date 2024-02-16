@@ -1,4 +1,4 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.item;
 
 import com.guen.program.shop.model.entity.inheritance.Item;
 import com.querydsl.jpa.impl.JPAQueryFactory;

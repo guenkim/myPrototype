@@ -1,4 +1,4 @@
-package com.guen.program.shop.repository;
+package com.guen.program.shop.repository.category;
 
 import com.guen.program.shop.model.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
