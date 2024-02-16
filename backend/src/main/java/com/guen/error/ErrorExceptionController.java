@@ -2,7 +2,10 @@ package com.guen.error;
 
 
 import com.guen.jwt.exception.ExpiredRefreshJwtException;
-import com.guen.program.jpashop.exception.NotEnoughStockException;
+import com.guen.program.shop.exception.ItemNotFindException;
+import com.guen.program.shop.exception.NotEnoughStockException;
+import com.guen.program.shop.exception.NotMemberException;
+import com.guen.program.shop.exception.OrderNotFindException;
 import com.guen.program.todo.exception.PathVariableException;
 import com.guen.program.todo.exception.TodoNotFindException;
 import com.guen.sign.Exception.NotValidIdOrPasswordException;
@@ -60,6 +63,13 @@ public class ErrorExceptionController {
         return buildFieldErrors(ErrorCode.INPUT_VALUE_INVALID, fieldErrors);
     }
 
+    @ExceptionHandler(NotEnoughStockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNotEnoughStockException(NotEnoughStockException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.NotEnoughStockException);
+    }
+
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse handleBindException(BindException e) {
@@ -90,6 +100,22 @@ public class ErrorExceptionController {
         return buildError(ErrorCode.ConstraintViolationException);
     }
 
+    @ExceptionHandler(NotMemberException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotMemberException(NotMemberException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.NotMemberException);
+    }
+
+    @ExceptionHandler(OrderNotFindException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotMemberException(OrderNotFindException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.OrderNotFindException);
+    }
+
+
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorResponse handleInternalServerException(Exception e) {
@@ -103,12 +129,12 @@ public class ErrorExceptionController {
         return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(NotEnoughStockException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ErrorResponse handleNotEnoughStockException(NotEnoughStockException e) {
-        log.error(e.getMessage());
-        return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(NotEnoughStockException.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    protected ErrorResponse handleNotEnoughStockException(NotEnoughStockException e) {
+//        log.error(e.getMessage());
+//        return buildError(ErrorCode.INTERNAL_SERVER_ERROR);
+//    }
 
     /*******************************************************************************
      * SpringSecurity - JWT 토큰 관련 에러 핸들링
@@ -161,13 +187,19 @@ public class ErrorExceptionController {
         return buildError(ErrorCode.TodoNotFindException);
     }
 
+    @ExceptionHandler(ItemNotFindException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleItemNotFindException(ItemNotFindException e) {
+        log.error(e.getMessage());
+        return buildError(ErrorCode.ItemNotFindException);
+    }
+
     @ExceptionHandler(PathVariableException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleTodoNotFindException(PathVariableException e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.PathVariableException);
     }
-
 
 
 

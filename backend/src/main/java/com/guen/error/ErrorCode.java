@@ -21,7 +21,10 @@ public enum ErrorCode {
     TodoNotFindException,
     ConstraintViolationException,
     PathVariableException,
-    NotEnoughStockException
+    NotEnoughStockException,
+    ItemNotFindException,
+    NotMemberException,
+    OrderNotFindException
     ;
 
     private String code;
@@ -165,6 +168,38 @@ public enum ErrorCode {
 
 
 
+        @Value("${error.ItemNotFindException.code}")
+        @NotBlank
+        private String itemNotFindErrCd;
+        @Value("${error.ItemNotFindException.message}")
+        @NotBlank
+        private String itemNotFindErrMsg;
+        @Value("${error.ItemNotFindException.status}")
+        @NotBlank
+        private int itemNotFindErrStts;
+
+
+        @Value("${error.NotMemberException.code}")
+        @NotBlank
+        private String notMemberErrCd;
+        @Value("${error.NotMemberException.message}")
+        @NotBlank
+        private String notMemberErrMsg;
+        @Value("${error.NotMemberException.status}")
+        @NotBlank
+        private int notMemberErrStts;
+
+        @Value("${error.OrderNotFindException.code}")
+        @NotBlank
+        private String orderNotFindErrCd;
+        @Value("${error.OrderNotFindException.message}")
+        @NotBlank
+        private String orderNotFindErrMsg;
+        @Value("${error.OrderNotFindException.status}")
+        @NotBlank
+        private int orderNotFindErrStts;
+
+
 
         public void init(){
             ErrorCode.INPUT_VALUE_INVALID.initialize(invalidInputErrCd,invalidInputErrMsg,invalidInputErrStts);
@@ -181,7 +216,10 @@ public enum ErrorCode {
             ErrorCode.TodoNotFindException.initialize(todoNotFindErrCd,todoNotFindErrMsg,todoNotFindErrStts);
             ErrorCode.ConstraintViolationException.initialize(constraintViolationErrCd,constraintViolationErrMsg,constraintViolationErrStts);
             ErrorCode.PathVariableException.initialize(pathVariableExceptionErrCd,pathVariableExceptionErrMsg,pathVariableExceptionErrStts);
+            ErrorCode.ItemNotFindException.initialize(itemNotFindErrCd,itemNotFindErrMsg,itemNotFindErrStts);
 
+            ErrorCode.NotMemberException.initialize(notMemberErrCd,notMemberErrMsg,notMemberErrStts);
+            ErrorCode.OrderNotFindException.initialize(orderNotFindErrCd,orderNotFindErrMsg,orderNotFindErrStts);
         }
     }
 }

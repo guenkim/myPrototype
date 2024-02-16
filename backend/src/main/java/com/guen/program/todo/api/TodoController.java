@@ -49,7 +49,8 @@ public class TodoController {
     //@Hidden
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "todo 목록 조회 성공",  content = @Content(schema = @Schema(implementation = PageResponse.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "내부 서버 오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping
     public ResponseEntity getTodos(
