@@ -2,6 +2,10 @@ package com.guen.program.shop.repository;
 
 import com.guen.program.shop.model.dto.request.ReqOrderSearchDto;
 import com.guen.program.shop.model.entity.Order;
+import com.guen.program.shop.model.entity.QCrew;
+import com.guen.program.shop.model.entity.QOrder;
+import com.guen.program.shop.model.enumclass.OrderStatus;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -28,6 +32,26 @@ public class OrderRepoExtendImpl extends QuerydslRepositorySupport implements Or
         this.em = entityManager;
         super.setEntityManager(entityManager);
         jpaQueryFactory = new JPAQueryFactory(entityManager);
+    }
+
+    public List<Order> findJpaQueryFactoryAll(ReqOrderSearchDto orderSearch) {
+        List<Order> orders = jpaQueryFactory.selectFrom(QOrder.order)
+                .join(QOrder.order.crew, QCrew.crew)
+                .where(getPredicateCondition(orderSearch))
+                .fetch();
+        return orders;
+    }
+
+    public BooleanBuilder getPredicateCondition(ReqOrderSearchDto orderSearch){
+        BooleanBuilder predicate = new BooleanBuilder();
+        OrderStatus status = orderSearch.getOrderStatus();
+        if(orderSearch.getCrewId()!=0){
+            predicate.and(QOrder.order.crew.id.eq(orderSearch.getCrewId()));
+        }
+        if(status != null){
+            predicate.and(QOrder.order.status.eq(orderSearch.getOrderStatus()));
+        }
+        return predicate;
     }
 
     /**

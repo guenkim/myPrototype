@@ -5,15 +5,16 @@ import com.guen.program.shop.exception.NotMemberException;
 import com.guen.program.shop.exception.OrderNotFindException;
 import com.guen.program.shop.model.dto.request.ReqOrderSearchDto;
 import com.guen.program.shop.model.dto.response.OrderDto;
-import com.guen.program.shop.model.entity.Crew;
-import com.guen.program.shop.model.entity.Delivery;
-import com.guen.program.shop.model.entity.Order;
-import com.guen.program.shop.model.entity.OrderItem;
+import com.guen.program.shop.model.entity.*;
 import com.guen.program.shop.model.entity.inheritance.Item;
 import com.guen.program.shop.model.enumclass.DeliveryStatus;
 import com.guen.program.shop.model.enumclass.OrderStatus;
 import com.guen.program.shop.repository.*;
+import com.querydsl.core.BooleanBuilder;
+import jakarta.persistence.criteria.JoinType;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,7 +72,18 @@ public class OrderService {
         Crew crew1 = crewRepo.findById(orderSearch.getCrewId()).orElseThrow(() -> new NotMemberException("그러한 회원이 없어!"));
         OrderDto.Crew crew = new OrderDto.Crew(crew1.getId(), crew1.getName());
         AtomicReference<BigInteger> totalOrderPrice = new AtomicReference<>(BigInteger.ZERO);
-        orderRepo.findAllByCriteria(orderSearch).forEach(
+        
+        //JpaSpecificationExecutor 테스트
+        //orderRepo.findAll(getSpecficationCondition(orderSearch)).forEach(
+
+        //QuerydslPredicateExecutor 테스트
+        //orderRepo.findAll(getPredicateCondition(orderSearch)).forEach(
+
+        //JpaQueryFactory 테스트
+        orderRepo.findJpaQueryFactoryAll(orderSearch).forEach(
+
+        //CriteriaBuilder 테스트
+        //orderRepo.findAllByCriteria(orderSearch).forEach(
                 order -> {
                     OrderDto.Order.Delivery delivery = new OrderDto.Order.Delivery(order.getDelivery().getAddress(), order.getDelivery().getStatus());
                     List<OrderItem> retOrderItem = orderItemRepo.findByOrderId(order.getId()).orElseThrow(()->new OrderNotFindException("그런 order 없어!"));
@@ -92,6 +104,7 @@ public class OrderService {
                     retOrder.add(orderResponse);
                 }
         );
+
         OrderDto orderDto = new OrderDto(crew, retOrder, totalOrderPrice.get());
         return orderDto;
     }
@@ -110,4 +123,34 @@ public class OrderService {
             itemRepo.save(item);
         });
     }
+
+
+    public Specification<Order> getSpecficationCondition(ReqOrderSearchDto orderSearch){
+        Specification<Order> spec = Specification.where(null);
+        OrderStatus status = orderSearch.getOrderStatus();
+        if(orderSearch.getCrewId()!=0){
+            spec = spec.and((root, query, criteriaBuilder) -> {
+                root.join("crew", JoinType.INNER); // Inner Join
+                return criteriaBuilder.equal(root.get("crew").get("id"),orderSearch.getCrewId());
+            });
+        }
+        if(status != null){
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), orderSearch.getOrderStatus()));
+        }
+        return spec;
+    }
+
+    public BooleanBuilder getPredicateCondition(ReqOrderSearchDto orderSearch){
+        BooleanBuilder predicate = new BooleanBuilder();
+        OrderStatus status = orderSearch.getOrderStatus();
+        if(orderSearch.getCrewId()!=0){
+            predicate.and(QOrder.order.crew.id.eq(orderSearch.getCrewId()));
+        }
+        if(status != null){
+            predicate.and(QOrder.order.status.eq(orderSearch.getOrderStatus()));
+        }
+        return predicate;
+    }
+
+
 }

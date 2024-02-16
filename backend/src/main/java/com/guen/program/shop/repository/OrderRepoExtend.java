@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface OrderRepoExtend {
 
     List<Order> findAllByCriteria(ReqOrderSearchDto orderSearch);
+    List<Order> findJpaQueryFactoryAll(ReqOrderSearchDto orderSearch);
 }
