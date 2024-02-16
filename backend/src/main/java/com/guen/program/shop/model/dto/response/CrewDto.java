@@ -11,6 +11,8 @@ import lombok.Getter;
 @Schema(description = "회원 정보")
 @Getter
 public class CrewDto {
+    @Schema(description = "회원아이디")
+    private Long id;
 
     @Schema(description = "회원이름")
     private String name;
@@ -19,7 +21,8 @@ public class CrewDto {
     private Address address;
 
     @Builder
-    public CrewDto(String name, Address address) {
+    public CrewDto(Long id ,String name, Address address) {
+        this.id = id;
         this.name = name;
         this.address = address;
     }

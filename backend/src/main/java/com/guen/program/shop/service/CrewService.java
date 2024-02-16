@@ -27,6 +27,7 @@ public class CrewService {
                                     .zipcode(crew.getAddress().getZipcode())
                                     .build())
                             .name(crew.getName())
+                            .id(crew.getId())
                             .build()
         ).collect(java.util.stream.Collectors.toList());
         return crewDtoList;
