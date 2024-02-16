@@ -34,9 +34,9 @@ public class OrderDto {
     @Schema(description = "주문자 정보")
     @Getter
     public static class Crew {
-        @Schema(description = "주문자 아이디", nullable = false, example = "주문자 아이디")
+        @Schema(description = "주문자 아이디",  example = "주문자 아이디")
         private Long id;
-        @Schema(description = "주문자", nullable = false, example = "주문자")
+        @Schema(description = "주문자", example = "주문자")
         private String name;
         public Crew(Long id,String name) {
             this.id = id;
@@ -48,13 +48,13 @@ public class OrderDto {
     @Getter
     public static class Order {
 
-        @Schema(description = "주문 아이디", nullable = false, example = "주문 아이디")
+        @Schema(description = "주문 아이디", example = "주문 아이디")
         private Long id;
 
-        @Schema(description = "주문 시간", nullable = false, example = "yyyyMMdd")
+        @Schema(description = "주문 시간",  example = "yyyyMMdd")
         private LocalDate orderDate;
 
-        @Schema(description = "주문상태", nullable = false, example = "[ORDER, CANCEL]")
+        @Schema(description = "주문상태", example = "[ORDER, CANCEL]")
         private OrderStatus status; //주문상태 [ORDER, CANCEL]
 
         @Schema(description = "배송정보")
@@ -78,7 +78,7 @@ public class OrderDto {
         public static class Delivery {
             @Schema(description = "배송지 주소")
             private Address address;
-            @Schema(description = "배송 상태 정보", nullable = false, example = "READY, COMP")
+            @Schema(description = "배송 상태 정보", example = "READY, COMP")
             private DeliveryStatus status; //READY, COMP
 
             public Delivery(Address address, DeliveryStatus status) {

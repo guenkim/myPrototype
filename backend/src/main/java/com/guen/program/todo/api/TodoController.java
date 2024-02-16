@@ -40,7 +40,7 @@ import java.util.List;
 @UserAuthorize
 @RequiredArgsConstructor
 @Validated
-@Hidden
+//@Hidden
 public class TodoController {
 
     private final TodoService todoService;

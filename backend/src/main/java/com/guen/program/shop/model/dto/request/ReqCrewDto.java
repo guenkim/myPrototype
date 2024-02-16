@@ -13,19 +13,19 @@ import lombok.Getter;
 @Getter
 public class ReqCrewDto {
 
-    @Schema(description = "회원이름")
+    @Schema(description = "회원이름" , nullable = false)
     @NotBlank
     private String name;
 
-    @Schema(description = "도시")
+    @Schema(description = "도시" , nullable = false)
     @NotBlank
     private String city;
 
-    @Schema(description = "거리명")
+    @Schema(description = "거리명" , nullable = false)
     @NotBlank
     private String street;
 
-    @Schema(description = "zipcode")
+    @Schema(description = "zipcode" , nullable = false)
     @NotBlank
     private String zipcode;
 

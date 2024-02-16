@@ -6,6 +6,7 @@ import com.guen.common.annotation.EnumNotNull;
 import com.guen.program.shop.model.enumclass.BatType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
@@ -22,15 +23,18 @@ public class ReqUpdateItemDto {
 
     @Schema(description = "가격", nullable = false, example = "가격" ,defaultValue = "99999999")
     @Positive
+    @NotNull
     private int price;
 
 
     @Schema(description = "재고", nullable = false, example = "재고",defaultValue = "99999999")
     @Positive
+    @NotNull
     private int stockQuanitty;
 
     @Schema(description = "상품구분, STOCK : COIN", nullable = false, example = "STOCK" ,defaultValue = "STOCK")
     @EnumNotNull
+    @NotNull
     private BatType batType;
 
     @Schema(description = "틱커 , STOCK일 경우 입력", nullable = true, example = "BIDU" ,defaultValue = "BIDU")

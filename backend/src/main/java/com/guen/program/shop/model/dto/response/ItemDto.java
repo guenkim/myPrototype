@@ -19,26 +19,26 @@ import java.util.List;
 @Getter
 public class ItemDto {
 
-    @Schema(description = "상품 아이디", nullable = false, example = "아이디")
+    @Schema(description = "상품 아이디", example = "아이디")
     private Long id;
 
-    @Schema(description = "상품명", nullable = false, example = "상품명")
+    @Schema(description = "상품명", example = "상품명")
     private String name;
 
-    @Schema(description = "가격", nullable = false, example = "가격")
+    @Schema(description = "가격", example = "가격")
     private int price;
 
 
-    @Schema(description = "재고", nullable = false, example = "재고")
+    @Schema(description = "재고", example = "재고")
     private int stockQuanitty;
 
-    @Schema(description = "상품구분, STOCK : COIN", nullable = false, example = "STOCK")
+    @Schema(description = "상품구분, STOCK : COIN", example = "STOCK")
     private BatType batType;
 
-    @Schema(description = "틱커 , STOCK일 경우 입력", nullable = true, example = "BIDU")
+    @Schema(description = "틱커 , STOCK일 경우 입력", example = "BIDU")
     private String ticker;
 
-    @Schema(description = "코인회사, COIN일 경우 입력", nullable = true, example = "BITCOIN")
+    @Schema(description = "코인회사, COIN일 경우 입력", example = "BITCOIN")
     private String company;
 
     @Schema(description = "상품 카테고리 아이디 목록")
