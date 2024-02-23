@@ -1,14 +1,19 @@
 package com.guen.program.shop.model.entity;
 
+import com.guen.program.qdslstudy.model.entity.Employee;
 import com.guen.program.shop.model.enumclass.OrderStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.mapping.Join;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 @Entity
@@ -33,6 +38,45 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Size(max = 8)
+    @Column(name = "ORDER_MODE", length = 8)
+    private String orderMode;
+
+
+
+    @Column(name = "ORDER_STATUS")
+    private Short orderStatus;
+
+    @Column(name = "ORDER_TOTAL", precision = 8, scale = 2)
+    private BigDecimal orderTotal;
+
+    @Column(name = "PROMOTION_ID")
+    private Integer promotionId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SALES_REP_ID")
+    private Employee salesRep;
+
+
+    public void setSalesRep(Employee salesRep) {
+        this.salesRep = salesRep;
+    }
+
+    public void setPromotionId(Integer promotionId) {
+        this.promotionId = promotionId;
+    }
+
+    public void setOrderTotal(BigDecimal orderTotal) {
+        this.orderTotal = orderTotal;
+    }
+
+    public void setOrderStatus(Short orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setOrderMode(String orderMode) {
+        this.orderMode = orderMode;
+    }
 
     @Builder
     public Order(LocalDate orderDate, OrderStatus status) {

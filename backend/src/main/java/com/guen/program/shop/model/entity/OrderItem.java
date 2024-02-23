@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @Entity
-@Table(name="orderitem")
+@Table(name="ordersitem")
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 @Getter
 public class OrderItem {
