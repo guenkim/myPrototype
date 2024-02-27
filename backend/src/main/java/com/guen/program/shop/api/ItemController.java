@@ -2,7 +2,7 @@ package com.guen.program.shop.api;
 
 
 import com.guen.error.ErrorResponse;
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import com.guen.program.shop.model.dto.request.ReqItemDto;
 import com.guen.program.shop.model.dto.request.ReqUpdateItemDto;
 import com.guen.program.shop.model.dto.response.ItemDto;

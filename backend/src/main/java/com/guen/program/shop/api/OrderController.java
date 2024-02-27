@@ -1,7 +1,7 @@
 package com.guen.program.shop.api;
 
 import com.guen.error.ErrorResponse;
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import com.guen.program.shop.model.dto.request.ReqOrderSearchDto;
 import com.guen.program.shop.model.dto.response.OrderDto;
 import com.guen.program.shop.service.OrderService;
@@ -22,8 +22,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "주문 api")
 @Slf4j

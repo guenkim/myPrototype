@@ -1,6 +1,7 @@
-package com.guen.jwt.security;
+package com.guen.jwt.config;
 
 import com.guen.jwt.exception.ExpiredRefreshJwtException;
+import com.guen.jwt.service.TokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

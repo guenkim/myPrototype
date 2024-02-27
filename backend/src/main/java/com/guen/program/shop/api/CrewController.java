@@ -1,10 +1,9 @@
 package com.guen.program.shop.api;
 
 import com.guen.error.ErrorResponse;
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import com.guen.program.shop.model.dto.request.ReqCrewDto;
 import com.guen.program.shop.model.dto.response.CrewDto;
-import com.guen.program.shop.model.entity.Crew;
 import com.guen.program.shop.service.CrewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

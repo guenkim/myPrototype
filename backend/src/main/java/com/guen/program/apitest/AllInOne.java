@@ -1,6 +1,6 @@
 package com.guen.program.apitest;
 
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import com.guen.program.apitest.model.dto.TestReq;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

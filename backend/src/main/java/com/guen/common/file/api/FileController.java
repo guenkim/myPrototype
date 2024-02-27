@@ -2,7 +2,7 @@ package com.guen.common.file.api;
 
 import com.guen.common.file.exception.FileNotFoundException;
 import com.guen.common.file.service.FileStorageService;
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

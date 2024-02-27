@@ -1,4 +1,4 @@
-package com.guen.jwt.security;
+package com.guen.jwt.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

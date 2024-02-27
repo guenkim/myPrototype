@@ -1,4 +1,4 @@
-package com.guen.jwt.security;
+package com.guen.jwt.auth;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 

@@ -2,7 +2,7 @@ package com.guen.program.admin.controller;
 
 
 import com.guen.common.model.dto.ApiResponse;
-import com.guen.jwt.security.AdminAuthorize;
+import com.guen.jwt.auth.AdminAuthorize;
 import com.guen.program.admin.service.AdminService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;

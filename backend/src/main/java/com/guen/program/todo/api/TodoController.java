@@ -3,14 +3,13 @@ package com.guen.program.todo.api;
 import com.guen.common.model.dto.PageRequest;
 import com.guen.common.model.dto.PageResponse;
 import com.guen.error.ErrorResponse;
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import com.guen.program.todo.model.entity.Todo;
 import com.guen.program.todo.model.enumclass.Complete;
 import com.guen.program.todo.model.request.TodoReq;
 import com.guen.program.todo.model.response.TodoSingleRes;
 import com.guen.program.todo.service.TodoService;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

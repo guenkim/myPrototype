@@ -3,7 +3,7 @@ package com.guen.program.member.controller;
 
 import com.guen.common.model.dto.ApiResponse;
 import com.guen.program.member.dto.request.MemberUpdateRequest;
-import com.guen.jwt.security.UserAuthorize;
+import com.guen.jwt.auth.UserAuthorize;
 import com.guen.program.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;

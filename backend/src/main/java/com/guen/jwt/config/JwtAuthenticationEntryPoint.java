@@ -1,4 +1,4 @@
-package com.guen.jwt.security;
+package com.guen.jwt.config;
 
 import com.guen.program.todo.exception.PathVariableException;
 import jakarta.servlet.http.HttpServletRequest;

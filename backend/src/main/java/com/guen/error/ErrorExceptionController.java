@@ -33,25 +33,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ErrorExceptionController {
 
-    /*@ExceptionHandler(EmailDuplicationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ErrorResponse handleConstraintViolationException(EmailDuplicationException e) {
-        final ErrorCode errorCode = ErrorCode.EMAIL_DUPLICATION;
-        log.error(errorCode.getMessage(), e.getEmail() + e.getField());
-        return buildError(errorCode);
-    }*/
-
-    /*@ExceptionHandler(value = {
-            AccountNotFoundException.class
-    })
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ErrorResponse handleAccountNotFoundException(AccountNotFoundException e) {
-        final ErrorCode accountNotFound = ErrorCode.ACCOUNT_NOT_FOUND;
-        log.error(accountNotFound.getMessage(), e.getId());
-        return buildError(accountNotFound);
-    }*/
-
-
     /*******************************************************************************
      * SpringSecurity - GLOBAL 에러 핸들링
      *******************************************************************************/

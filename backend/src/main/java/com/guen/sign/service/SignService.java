@@ -3,8 +3,6 @@ package com.guen.sign.service;
 
 import com.guen.jwt.entity.MemberRefreshToken;
 import com.guen.jwt.repository.MemberRefreshTokenRepository;
-import com.guen.program.member.dto.request.MemberUpdateRequest;
-import com.guen.program.member.dto.response.MemberUpdateResponse;
 import com.guen.sign.Exception.NotValidIdOrPasswordException;
 import com.guen.sign.dto.sign_in.request.SignInRequest;
 import com.guen.sign.dto.sign_in.response.SignInResponse;
@@ -12,7 +10,7 @@ import com.guen.sign.dto.sign_up.request.SignUpRequest;
 import com.guen.sign.dto.sign_up.response.SignUpResponse;
 import com.guen.program.member.entity.Member;
 import com.guen.program.member.repository.MemberRepository;
-import com.guen.jwt.security.TokenProvider;
+import com.guen.jwt.service.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
