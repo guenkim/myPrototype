@@ -36,16 +36,19 @@ public class FileController {
 
     @Autowired
     private FileStorageService fileStorageService;
-    @GetMapping("/file/{fileId}")
+
+
     @Operation(summary = "파일 다운로드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "다운로드 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "존재 하지 않는 파일 입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @GetMapping("/file/{fileId}")
     public ResponseEntity<Resource> downloadFile(
             @Parameter(description = "파일 아이디", required = true, in = ParameterIn.PATH)
-            @PathVariable String fileId, HttpServletRequest request) throws IOException, FileNotFoundException {
+            @PathVariable final String fileId,
+            HttpServletRequest request) throws IOException, FileNotFoundException {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(Long.parseLong(fileId));
 
@@ -68,16 +71,15 @@ public class FileController {
                 .body(resource);
     }
 
-
-    @DeleteMapping("/file/{fileId}")
     @Operation(summary = "todo 삭제") // @Operation : API 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "다운로드 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @DeleteMapping("/file/{fileId}")
     public ResponseEntity delete(
             @Parameter(description = "파일 아이디",required = true, in = ParameterIn.PATH)
-            @PathVariable(value = "fileId", required = true) String fileId
+            @PathVariable(value = "fileId", required = true) final String fileId
     ) {
         log.info("FileController > delete");
         fileStorageService.deleteFileById(Long.parseLong(fileId));
