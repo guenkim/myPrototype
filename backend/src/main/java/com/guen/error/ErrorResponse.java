@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Schema(description = "에러 전문")
 @Getter
 public class ErrorResponse {
 

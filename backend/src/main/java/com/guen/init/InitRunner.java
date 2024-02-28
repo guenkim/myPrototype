@@ -41,7 +41,7 @@ public class InitRunner implements ApplicationRunner {
                 }
         );
         memberRepository.findByAccount("user").ifPresentOrElse(
-                member-> System.out.println("user 존재"),
+                member-> System.out.println(""),
                 ()-> {
                     memberRepository.save(Member.builder()
                             .account("user")
