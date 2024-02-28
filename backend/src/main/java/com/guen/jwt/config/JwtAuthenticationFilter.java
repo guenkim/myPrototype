@@ -45,15 +45,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 reissueAccessToken(request, response, e);
             }catch (ExpiredJwtException eee){
                 logger.info("액세스 토큰 만료");
-                //throw new ExpiredJwtException(null,null,"액세스 토큰 만료");
                 request.setAttribute("exception", new ExpiredJwtException(null,null,"액세스 토큰 만료"));
             }catch (ExpiredRefreshJwtException ee){
                 logger.info("리프레쉬 토큰에 문제가 있음");
-                //throw new ExpiredRefreshJwtException("리프레쉬 토큰 만료");
                 request.setAttribute("exception", new ExpiredRefreshJwtException("리프레쉬 토큰 만료"));
             } catch (Exception ex) {
-                logger.info(">>>>>>>>>>>>>>>>>>>>");
-                //throw new RuntimeException(ex);
                 request.setAttribute("exception", new RuntimeException(ex));
             }
         }
@@ -88,7 +84,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String refreshToken = parseBearerToken(request, "Refresh-Token");
             if (refreshToken == null) {
-                logger.info("xxxxxxxxxxxxxxx");
                 throw new ExpiredJwtException(null,null,"액세스 토큰 만료");
             }
             String oldAccessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
@@ -102,15 +97,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setHeader("newToken", newAccessToken);
         }
         catch (ExpiredJwtException e){
-            //logger.info("액세스 토큰 만료");
             throw new ExpiredJwtException(null,null,"액세스 토큰 만료");
         }catch (ExpiredRefreshJwtException ee){
-            //logger.info("리프레쉬 토큰에 문제가 있음");
             throw new ExpiredRefreshJwtException("리프레쉬 토큰 만료");
         }
         catch (Exception e) {
             throw new Exception("");
-            //request.setAttribute("exception", e);
         }
     }
 }

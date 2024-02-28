@@ -55,12 +55,6 @@ public class SecurityConfig {
                 .build();
     }
 
-    /*********************************
-     * 암호화 모듈 설정
-     *********************************/
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 }
 
