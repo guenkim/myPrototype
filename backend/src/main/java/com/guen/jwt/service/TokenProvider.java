@@ -26,8 +26,8 @@ import java.util.UUID;
 @Service
 public class TokenProvider {
     private final String secretKey;
-    private final long expirationMinutes;
-    private final long refreshExpirationHours;
+    private final long expirationMinutes; //30
+    private final long refreshExpirationHours; //24
     private final String issuer;
     private final long reissueLimit;
     private final MemberRefreshTokenRepository memberRefreshTokenRepository;
