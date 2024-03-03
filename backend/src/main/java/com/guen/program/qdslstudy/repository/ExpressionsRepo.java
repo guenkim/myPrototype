@@ -41,18 +41,18 @@ public class ExpressionsRepo {
      SELECT
      *
      FROM (
-     SELECT
-     d.department_name,
-     e.department_id,
-     SUM(e.salary) as dept_sal
-     FROM
-     HR.employees e
-     JOIN
-     HR.departments d ON e.department_id = d.department_id
-     GROUP BY
-     e.department_id, d.department_name
-     ORDER BY
-     SUM(e.salary) DESC
+         SELECT
+             d.department_name,
+             e.department_id,
+             SUM(e.salary) as dept_sal
+         FROM
+         HR.employees e
+         JOIN
+         HR.departments d ON e.department_id = d.department_id
+         GROUP BY
+         e.department_id, d.department_name
+         ORDER BY
+         SUM(e.salary) DESC
      )
      WHERE ROWNUM <= 3;
      **/
@@ -102,7 +102,9 @@ public class ExpressionsRepo {
     }
 
     /**
-     SELECT customer_id, cust_first_name,
+     SELECT
+         customer_id,
+         cust_first_name,
          DECODE(gender, 'M', '남성', 'F', '여성') decode_gender,
          CASE gender WHEN 'M' THEN '남성'
                     WHEN 'F' THEN '여성'

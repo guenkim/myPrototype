@@ -38,16 +38,17 @@ public class SubQueryRepo {
 
 
     /**
-     SELECT E.EMPLOYEE_ID,
-     E.FIRST_NAME,
-     E.LAST_NAME,
-     E.EMAIL,
-     JH.START_DATE,
-     JH.END_DATE,
-     JH.JOB_ID,
-     D.DEPARTMENT_NAME,
-     L.CITY,
-     L.STATE_PROVINCE
+     SELECT
+         E.EMPLOYEE_ID,
+         E.FIRST_NAME,
+         E.LAST_NAME,
+         E.EMAIL,
+         JH.START_DATE,
+         JH.END_DATE,
+         JH.JOB_ID,
+         D.DEPARTMENT_NAME,
+         L.CITY,
+         L.STATE_PROVINCE
      FROM HR.EMPLOYEES E
      JOIN HR.JOB_HISTORY JH ON E.EMPLOYEE_ID = JH.EMPLOYEE_ID
      JOIN HR.DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
@@ -82,19 +83,23 @@ public class SubQueryRepo {
     }
 
     /**
-     SELECT E.EMPLOYEE_ID,
-     E.FIRST_NAME,
-     E.LAST_NAME,
-     E.EMAIL,
-     JH.START_DATE,
-     JH.END_DATE,
-     JH.JOB_ID,
-     D.DEPARTMENT_NAME,
-     L.CITY,
-     L.STATE_PROVINCE
-     FROM (SELECT *
-     FROM HR.EMPLOYEES
-     WHERE EMPLOYEE_ID = 102) E
+     SELECT
+             E.EMPLOYEE_ID,
+             E.FIRST_NAME,
+             E.LAST_NAME,
+             E.EMAIL,
+             JH.START_DATE,
+             JH.END_DATE,
+             JH.JOB_ID,
+             D.DEPARTMENT_NAME,
+             L.CITY,
+             L.STATE_PROVINCE
+     FROM
+     (
+         SELECT *
+         FROM HR.EMPLOYEES
+         WHERE EMPLOYEE_ID = 102
+     ) E
      JOIN HR.JOB_HISTORY JH ON E.EMPLOYEE_ID = JH.EMPLOYEE_ID
      JOIN HR.DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
      JOIN HR.LOCATIONS L ON D.LOCATION_ID = L.LOCATION_ID;
@@ -135,12 +140,18 @@ public class SubQueryRepo {
     }
 
     /**
-     SELECT a.employee_id, a.first_name || ' ' || a.last_name names, a.salary,
-     ROUND(b.avgs), b.maxs
+     SELECT
+            a.employee_id,
+            a.first_name || ' ' || a.last_name names,
+            a.salary,
+            ROUND(b.avgs), b.maxs
      FROM HR.employees a,
-     ( SELECT AVG(salary) avgs,
-     MAX(salary) maxs
-     FROM HR.employees ) b
+     (
+        SELECT
+                AVG(salary) avgs,
+                 MAX(salary) maxs
+         FROM HR.employees
+     ) b
      WHERE a.salary BETWEEN b.avgs AND b.maxs
      ORDER BY a.salary DESC;
      **/
@@ -246,9 +257,10 @@ public class SubQueryRepo {
         QEmployee qEmployee = QEmployee.employee;
 
         BigDecimal beforeSalary = jqf.select(qEmployee.salary.max()).from(qEmployee).where(qEmployee.id.eq(131)).fetchOne();
+        BigDecimal add = beforeSalary.add(new BigDecimal(1));
 
         long execute = jqf.update(qEmployee)
-                .set(qEmployee.salary, beforeSalary)
+                .set(qEmployee.salary, add)
                 .where(qEmployee.id.eq(131))
                 .execute();
 
