@@ -38,6 +38,8 @@ public class TodoJpaExtendImpl extends QuerydslRepositorySupport  implements Tod
     public PageResponse findAll(final String subject, final Pageable pageable) {
 
         List<OrderSpecifier> ORDERS = QueryDslUtil.getDBAllOrderSpecifiers(pageable);
+        long page = pageable.getPageNumber();
+        long size = pageable.getPageSize();
 
         List<Todo> todos = jpaQueryFactory
                 .selectFrom(todo)
@@ -45,8 +47,8 @@ public class TodoJpaExtendImpl extends QuerydslRepositorySupport  implements Tod
                 .fetchJoin()
                 .where(subjectLike(subject))
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .offset(page * size)
+                .limit(size)
                 .fetch();
 
         long totalCount = jpaQueryFactory
@@ -57,8 +59,6 @@ public class TodoJpaExtendImpl extends QuerydslRepositorySupport  implements Tod
         long total = totalCount;
         List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
 
-        long page = pageable.getPageNumber();
-        long size = pageable.getPageSize();
 
         return PageResponse.builder()
                 .page((int)page)
