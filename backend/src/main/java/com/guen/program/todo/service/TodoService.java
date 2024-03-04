@@ -133,7 +133,7 @@ public class TodoService {
                 () -> new TodoNotFindException("요청하신 todo가 없습니다.")
         );
         todo.updateTodo(todoReq);
-
+        fileJpa.deleteByTodoId(todo.getId());
         if(files!=null) {
             files.stream().map(file -> fileStorageService.storeFile(file))
                     .forEach(filename -> fileJpa.save(Files.builder().fileName(filename).todo(todo).build()));

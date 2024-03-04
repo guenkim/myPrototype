@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface FileJpa extends JpaRepository<Files,Long>,FileJpaExtend, QuerydslPredicateExecutor<Files>, JpaSpecificationExecutor<Files> {
     Optional<Files> findFileById(Long fileId);
+
+    void deleteByTodoId(Long todoId);
 }
