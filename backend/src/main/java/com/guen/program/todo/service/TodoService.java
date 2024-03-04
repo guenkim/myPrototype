@@ -51,38 +51,38 @@ public class TodoService {
         /*********************************************
          spring data jpa 페이징 적용
          *********************************************/
-         //Pageable dbSortPage = QueryDslUtil.getDBSortPage(pageable);
+//        Pageable dbSortPage = QueryDslUtil.getDBSortPage(pageable);
 
         /** Query Method 사용 **/
-        //Page<Todo> todoPage = todoJpa.findBySubjectContaining(subject, dbSortPage);
-        //long totalCount = todoPage.getTotalElements(); //전체항목수
-        //int size = todoPage.getSize(); //페이지당 항목수
-        //List<Todo> todos = todoPage.getContent(); //데이터 목록
-        //List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
-        //int page = todoPage.getNumber(); //현재 페이지
-        //return PageResponse.builder()
-        //        .page(page)
-        //        .size(size)
-        //        .totalCount((int)totalCount)
-        //        .content(todoRes).build();
+//        Page<Todo> todoPage = todoJpa.findBySubjectContaining(subject, dbSortPage);
+//        long totalCount = todoPage.getTotalElements(); //전체항목수
+//        int size = todoPage.getSize(); //페이지당 항목수
+//        int page = todoPage.getNumber(); //현재 페이지
+//        List<Todo> todos = todoPage.getContent(); //데이터 목록
+//        List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
+//        return PageResponse.builder()
+//                .page(page)
+//                .size(size)
+//                .totalCount((int)totalCount)
+//                .content(todoRes).build();
 
         /** QuerydslPredicateExecutor 사용 **/
-        //BooleanBuilder predicate = new BooleanBuilder();
-        //if(StringUtils.isNotBlank(subject)){
-        //    predicate.and(QTodo.todo.subject.contains(subject));
-        //}
-        //Page<Todo> todoPage = todoJpa.findAll(predicate, dbSortPage);
-
-        //long totalCount = todoPage.getTotalElements(); //전체항목수
-        //int size = todoPage.getSize(); //페이지당 항목수
-        //List<Todo> todos = todoPage.getContent(); //데이터 목록
-        //List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
-        //int page = todoPage.getNumber(); //현재 페이지
-        //return PageResponse.builder()
-        //        .page(page)
-        //        .size(size)
-        //        .totalCount((int)totalCount)
-        //        .content(todoRes).build();
+//        BooleanBuilder predicate = new BooleanBuilder();
+//        if(StringUtils.isNotBlank(subject)){
+//            predicate.and(QTodo.todo.subject.contains(subject));
+//        }
+//        Page<Todo> todoPage = todoJpa.findAll(predicate, dbSortPage);
+//
+//        long totalCount = todoPage.getTotalElements(); //전체항목수
+//        int size = todoPage.getSize(); //페이지당 항목수
+//        List<Todo> todos = todoPage.getContent(); //데이터 목록
+//        List<TodoRes> todoRes = todos.stream().map(todo -> todo.toTodoRes()).collect(Collectors.toList());
+//        int page = todoPage.getNumber(); //현재 페이지
+//        return PageResponse.builder()
+//                .page(page)
+//                .size(size)
+//                .totalCount((int)totalCount)
+//                .content(todoRes).build();
 
         /** JpaSpecificationExecutor 사용 **/
 //        Specification<Todo> spec = Specification.where(null);

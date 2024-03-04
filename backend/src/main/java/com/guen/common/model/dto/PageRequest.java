@@ -34,6 +34,9 @@ public final class PageRequest {
     @Schema(description = "페이지 정렬 정보", example = "id,asc,subject,desc")
     private String sort;
 
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
     public void setSort(String sort) {
         this.sort = sort;
