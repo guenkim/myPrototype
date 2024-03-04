@@ -40,6 +40,7 @@ public class TodoJpaExtendImpl extends QuerydslRepositorySupport  implements Tod
         List<OrderSpecifier> ORDERS = QueryDslUtil.getDBAllOrderSpecifiers(pageable);
         long page = pageable.getPageNumber();
         long size = pageable.getPageSize();
+        long offSet = pageable.getOffset();
 
         List<Todo> todos = jpaQueryFactory
                 .selectFrom(todo)
@@ -47,7 +48,7 @@ public class TodoJpaExtendImpl extends QuerydslRepositorySupport  implements Tod
                 .fetchJoin()
                 .where(subjectLike(subject))
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-                .offset(page * size)
+                .offset(offSet) //page * size
                 .limit(size)
                 .fetch();
 
