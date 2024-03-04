@@ -18,6 +18,7 @@ public class Crew {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
+    
     @Column(name = "name", length = 50)
     private String name;
 

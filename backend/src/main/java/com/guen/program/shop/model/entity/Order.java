@@ -38,45 +38,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Size(max = 8)
-    @Column(name = "ORDER_MODE", length = 8)
-    private String orderMode;
 
-
-
-    @Column(name = "ORDER_STATUS")
-    private Short orderStatus;
-
-    @Column(name = "ORDER_TOTAL", precision = 8, scale = 2)
-    private BigDecimal orderTotal;
-
-    @Column(name = "PROMOTION_ID")
-    private Integer promotionId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SALES_REP_ID")
-    private Employee salesRep;
-
-
-    public void setSalesRep(Employee salesRep) {
-        this.salesRep = salesRep;
-    }
-
-    public void setPromotionId(Integer promotionId) {
-        this.promotionId = promotionId;
-    }
-
-    public void setOrderTotal(BigDecimal orderTotal) {
-        this.orderTotal = orderTotal;
-    }
-
-    public void setOrderStatus(Short orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public void setOrderMode(String orderMode) {
-        this.orderMode = orderMode;
-    }
 
     @Builder
     public Order(LocalDate orderDate, OrderStatus status) {
