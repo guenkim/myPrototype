@@ -117,7 +117,7 @@ public class TodoController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{todoId}")
+
     @Operation(summary = "todo 삭제") // @Operation : API 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "todo 삭제 성공", content = @Content(schema = @Schema(hidden = true))),
@@ -125,6 +125,7 @@ public class TodoController {
             @ApiResponse(responseCode = "500", description = "내부 서버 오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @DeleteMapping("/{todoId}")
     public ResponseEntity delete(
             @Parameter(description = "todo 아이디",required = true, in = ParameterIn.PATH)
             @PathVariable(value = "todoId", required = true) final String todoId
@@ -134,7 +135,7 @@ public class TodoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{todoId}/{completed}")
+
     @Operation(summary = "todo 완료 여부 설정") // @Operation : API 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "todo 완료 여부 설정 성공", content = @Content(schema = @Schema(hidden = true))),
@@ -142,6 +143,7 @@ public class TodoController {
             @ApiResponse(responseCode = "500", description = "내부 서버 오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @PatchMapping("/{todoId}/{completed}")
     public ResponseEntity updateComplete(
             @Parameter(description = "todo 아이디", required = true, in = ParameterIn.PATH)
             @PathVariable(value = "todoId", required = true) final String todoId,
