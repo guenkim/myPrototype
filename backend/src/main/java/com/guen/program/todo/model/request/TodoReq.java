@@ -26,6 +26,13 @@ public class TodoReq {
     @Schema(description = "todo 완료 여부", nullable = false, example = "FALSE",defaultValue = "FALSE" )
     private Complete completed = Complete.FALSE;
 
+    @Builder
+    public TodoReq(String subject, String body, Complete completed) {
+        this.subject = subject;
+        this.body = body;
+        this.completed = completed;
+    }
+
     public Todo toEntity(){
         return Todo.builder()
                 .subject(subject)

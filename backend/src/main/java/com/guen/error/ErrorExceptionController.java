@@ -75,7 +75,7 @@ public class ErrorExceptionController {
 
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleTodoNotFindException(ConstraintViolationException e) {
         log.error(e.getMessage());
         return buildError(ErrorCode.ConstraintViolationException);
